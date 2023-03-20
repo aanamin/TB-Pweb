@@ -1,3 +1,4 @@
+request.method = 'POST'
 {
   "full name": "hasya amin ghina",
   "email": "haghag@gmail.com",
