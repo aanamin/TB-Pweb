@@ -22,15 +22,16 @@ var documents = db.define('documents',{
         allowNull   : false
     },
     created_at : {
-        type        : DataTypes.DATEONLY,
+        type        : DataTypes.DATE,
         allowNull   : false
     },
     updated_at : {
-        type        : DataTypes.DATEONLY,
+        type        : DataTypes.DATE,
         allowNull   : false
     }
 }, {
-    freezeTableName : true
+    freezeTableName : true,
+    timestamps  : false
 })
 
 module.exports = documents
