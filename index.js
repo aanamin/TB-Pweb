@@ -4,7 +4,7 @@ const port = 3000
 const controller = require('./controllers/index.js')
 const server = require('./routes/user.js')
 const database = require('./config/dbConfig.js')
-
+const bodyParser = require("body-parser");
 
 database.authenticate()
   .then(() => {
@@ -15,6 +15,7 @@ database.authenticate()
   });
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 app.use(server)
 app.get('/', (req, res) => {
