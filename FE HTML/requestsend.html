@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Send Request</title>
+    <style>
+        /* Style the button */
+        .send-button {
+          background-color: #4CAF50;
+          color: #fff;
+          padding: 10px 20px;
+          border-radius: 5px;
+          border: none;
+          cursor: pointer;
+        }
+        /* Add a hover effect for the button */
+        .send-button:hover {
+          background-color: #3e8e41;
+        }
+      </style>
+  </head>
+  <body>
+    <header>
+		<h4><a href="mainpage.html">Siletra</a></h4>
+		<nav>
+			<ul>
+				<li><a href="write1.html">write</a></li>
+				<li><a href="requestsign.html">request sign</a></li>
+				<li><a href="myrequest.html">my request</a></li>
+        <li><a href="resources.html">resources</a></li>
+				<li><a href="profile.html">profile</a></li>
+			</ul>
+		</nav>
+	</header>
+    <h1>Send Request</h1>
+    <form>
+		<label for="receiver">Receiver :</label>
+		<input type="text" id="receiver" name="receiver"><br>
+        <br>
+
+        <form action="upload.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        <br>
+		<label for="description">Description :</label>
+		<textarea id="write-letter" name="write-letter" rows="5" cols="50"></textarea>
+        <br>
+        <br>
+        <button class="send-button"><a href="requestsignlist.html">Add Request</a></button>
+
+	</form>
+    
+    <footer>
+		<p>&copy; Siletra 2023. All rights reserved.</p>
+	</footer>
+  </body>
+</html>

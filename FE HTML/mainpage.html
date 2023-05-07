@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Main Page</title>
+	<style>
+		.notification-menu {
+			position: relative;
+			display: inline-block;
+		}
+
+		.notification-menu-content {
+			display: none;
+			position: absolute;
+			z-index: 1;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			padding: 12px 16px;
+			border-radius: 5px;
+		}
+
+		.notification-menu:hover .notification-menu-content {
+			display: block;
+		}
+
+		.notification {
+			margin-bottom: 8px;
+			padding: 8px;
+			background-color: #f2f2f2;
+			border-radius: 5px;
+		}
+
+		.notification a {
+			color: #000;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h4>Siletra</h4>
+		<nav>
+			<ul>
+				<li><a href="write1.html">write</a></li>
+				<li><a href="requestsign.html">request sign</a></li>
+				<li><a href="myrequest.html">my request</a></li>
+                <li><a href="resources.html">resources</a></li>
+				<li><a href="profile.html">profile</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<h2>Welcome User!</h2>
+        <h3>hope your signing and letter experience is amazing</h3>
+        <br>
+		<div class="notification-menu">
+			<button>Notifications</button>
+			<div class="notification-menu-content">
+				<ul>
+					<li class="notification"><a href="#">Notification 1</a></li>
+					<li class="notification"><a href="#">Notification 2</a></li>
+					<li class="notification"><a href="#">Notification 3</a></li>
+				</ul>
+			</div>
+		</div>
+		<br>
+        <h2>Your Activities</h2>
+        <ul>
+            <li>you requested signature to pak husnil kamil</li>
+            <li>you sign billie’s signature request</li>
+            <li>you upload new resource</li>
+        </ul>
+
+        <br>
+        <h5>As we stated before, we are open for feedbacks</h5>
+        <h5>Kindly send yours to us below</h5>
+		<input type="feedback" id="feedback" name="feedback"><br>
+        <input type="submit" value="submit">
+	</main>
+
+	<footer>
+		<p>&copy; Siletra 2023. All rights reserved.</p>
+	</footer>
+</body>
+</html>
