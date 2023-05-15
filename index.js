@@ -1,10 +1,11 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const controller = require('./controllers/index.js')
+// const controller = require('./controllers/index.js')
 const server = require('./routes/user.js')
 const database = require('./config/dbConfig.js')
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 database.authenticate()
   .then(() => {
@@ -16,6 +17,7 @@ database.authenticate()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cookieParser());
 
 app.use(server)
 app.get('/', (req, res) => {

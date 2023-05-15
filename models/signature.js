@@ -17,6 +17,10 @@ var signature = db.define('signature',{
         primaryKey  : true,
         autoIncrement: false
     },
+    nama_tujuan : {
+        type        : DataTypes.STRING,
+        allowNull   : false
+    },
     jabatan : {
         type        : DataTypes.STRING,
         allowNull   : false
