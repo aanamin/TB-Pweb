@@ -63,6 +63,13 @@ controllers.register = async(req, res) => {
     }
 }
 
+controllers.tampilLogin = async (req, res ) => {
+    res.render('login')
+}
+
+controllers.mainpage = async (req,res) => {
+    res.render('mainpage')
+}
 
 controllers.login = async(req,res)=>{
    try {
@@ -87,10 +94,10 @@ controllers.login = async(req,res)=>{
         const active = pengguna.active
         const sign_img = pengguna.sign_img
 
-        const token = generateAccessToken({email: req.body.email})
+        // const token = generateAccessToken({email: req.body.email})
 
-        // const token = generateAccessToken({
-        // id,email,password,username,active,sign_img}, process.env.SECRET_TOKEN);
+        const token = generateAccessToken({
+        id,email}, process.env.SECRET_TOKEN);
 
         // await user.update(
         //     { remember_token: token },
@@ -99,13 +106,15 @@ controllers.login = async(req,res)=>{
         //     }
         //   );
 
-        //   res.cookie("token", token, {
-        //     httpOnly: true,
-        //     maxAge: 24 * 60 * 60 * 1000,
-        //   })
-        res.status(200).json({token});
+        res.cookie("token", token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000,
+        })
+        res.status(200).json({token: token, msg: 'Login Berhasil', success: true});
    } catch (error) {
-    console.log(error);
+    res.status(400).json({
+        msg: 'Login Tidak Berhasil'
+    })
     }
 }
 
