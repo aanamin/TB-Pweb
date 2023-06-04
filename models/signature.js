@@ -47,7 +47,7 @@ var signature = db.define('signature',{
     createdAt:'created_at',
     updatedAt: 'updated_at'
 });
-signature.belongsTo(user, { foreignKey: 'user_id' });
-signature.belongsTo(documents, { foreignKey: 'document_id' });
+// signature.belongsTo(user, { foreignKey: 'user_id' });
+// signature.belongsTo(documents, { foreignKey: 'document_id' });
 
 module.exports = signature

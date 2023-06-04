@@ -6,6 +6,6 @@ const controller = {}
 
 controller.doc = doc
 controller.user = user
-controller.signature = user
+controller.signature = signature
 
 module.exports = controller

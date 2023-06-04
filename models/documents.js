@@ -1,6 +1,7 @@
 'use strict'
 const {sequelize, DataTypes, err} = require('sequelize')
 const db = require('../config/dbConfig.js')
+const signature = require('./signature.js')
 
 var documents = db.define('documents',{
     id : {
@@ -21,6 +22,10 @@ var documents = db.define('documents',{
         type        : DataTypes.STRING,
         allowNull   : false
     },
+    filePath:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
     created_at : {
         type        : DataTypes.DATE,
         allowNull   : false
@@ -36,4 +41,5 @@ var documents = db.define('documents',{
     updatedAt: 'updated_at'
 })
 
+// documents.hasMany(signature);
 module.exports = documents

@@ -1,14 +1,35 @@
 
 const { or } = require('sequelize');
 const signature = require('../models/signature');
-const User = require('../models/user')
+const user = require('../models/user')
 const models = require('../models/index');
-const controller = {}
+const controllers = {}
 const jwt = require('jsonwebtoken')
 const { Op } = require("sequelize");
 
 // buat request dokumen yang ingin ditandangani
-controller.buatRequest = async(req,res) =>{    
+
+controllers.tampilRequestsign = async(req,res)=> {
+   
+    try {
+        
+        const userId = req.user.id
+        const userProfile = await user.findOne({where: {
+            id: userId
+        }})
+        if (!userProfile) {
+          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+        }
+    
+        res.render('requestsign', {
+            user: userProfile
+        });
+      } catch (error) {
+        console.log(error)
+      }
+}
+
+controllers.buatRequest = async(req,res) =>{    
     const accessToken = req.cookies.accessToken 
      if (!accessToken)
         return res.status(200).json("tidak ada token")
@@ -36,3 +57,6 @@ controller.buatRequest = async(req,res) =>{
      }
         
  }
+
+ 
+module.exports = controllers

@@ -1,6 +1,7 @@
 'use strict'
 const {sequelize, DataTypes, err} = require('sequelize')
 const db = require('../config/dbConfig.js')
+const signature = require('./signature.js')
 
 var user = db.define('user',{
     id : {
@@ -23,11 +24,11 @@ var user = db.define('user',{
     },
     active :{
         type        :DataTypes.INTEGER,
-        allowNull   :false
+        allowNull   :true
     },
     sign_img :{
         type        : DataTypes.STRING,
-        allowNull   : false
+        allowNull   : true
         
     },
     created_at : {
@@ -45,4 +46,5 @@ var user = db.define('user',{
     updatedAt: 'updated_at'
 })
 
+// user.hasMany(signature);
 module.exports = user

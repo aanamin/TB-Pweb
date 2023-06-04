@@ -6,6 +6,11 @@ const database = require('./config/dbConfig.js')
 const cookieParser = require("cookie-parser");
 const methodOverride = require('method-override');
 const auth = require('./routes/user.js')
+const fileUpload = require('express-fileupload');
+const uploadRoute = require('./routes/user.js');
+
+app.use(fileUpload());
+app.use('/upSignature', uploadRoute);
 
 app.use(methodOverride('_method'));
 app.use(cookieParser());

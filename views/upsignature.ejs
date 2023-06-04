@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<title>Signature Upload</title>
+    <style>
+            /* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #DAE2EC;
+  }
+  
+  /* Header styles */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #8EAFD5;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  header h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  header nav li {
+    margin-left: 24px;
+  }
+  
+  header nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  header nav a:hover {
+    color: #000;
+  }
+  
+  
+        /* Main styles */
+        main {
+            margin: 50px auto;
+            max-width: 600px;
+            padding: 16px;
+            background-color: #FFF;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            margin-bottom: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #8EAFD5;
+            color: #FFF;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #6B8FB3;
+        }
+
+        /* Footer styles */
+        footer {
+            text-align: center;
+            background-color: #8EAFD5;
+            color: #FFF;
+            padding: 8px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h4><a href="mainpage">Siletra</a></h4>
+		<%- include('navbar') %>
+    </header>
+	<h1>Signature Upload</h1>
+	<form action="/upSignature" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" accept=".jpg, .jpeg, .png">
+		<input type="submit" value="Upload">
+	</form>
+    <footer>
+		<p>&copy; Siletra 2023. All rights reserved.</p>
+	</footer>
+</body>
+</html>
