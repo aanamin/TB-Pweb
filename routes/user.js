@@ -22,7 +22,9 @@ server.get('/profile', login, controller.user.profil)
 server.get('/mainpage', login, controller.user.mainpage)
 server.get('/upSignature', login ,controller.user.tampilUpsignature)
 server.post('/upSignature', login,  controller.user.upsignature)
-server.get('/logout',  controller.user.logout) 
+server.get('/logout',login,   controller.user.logout) 
 
 server.get('/requestsign', login, controller.signature.tampilRequestsign)
+server.get('/myrequest', login, controller.signature.myrequest)
+server.get('/requestsend', login, controller.signature.requestsend)
 module.exports = server

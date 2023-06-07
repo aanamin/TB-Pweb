@@ -63,20 +63,25 @@
     <div class="card" style="width: rem; background: #8DAFD5;">
       <form>
         <label for="receiver">Receiver :</label>
-        <input type="text" id="receiver" name="receiver"><br>
+        <select class="form-select" aria-label="Default select example">
+          <option selected>Nama Receiver</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select><br>
         <br>
         
+        <label for="jabatan">jabatan :</label>
+        <input class="form-control" type="text" placeholder="Jabatan" aria-label="default input example">
+        <br>
         <form action="upload.php" method="post" enctype="multipart/form-data">
           <input type="file" name="file">
           <input type="submit" value="Upload">
         </form>
         <br>
-        <label for="description">Description :</label>
-        <textarea id="write-letter" name="write-letter" rows="5" cols="50"></textarea>
-        <br>
         <br>
       </div>
-        <button class="send-button"><a href="requestsignlist.html">Add Request</a></button>
+        <button class="send-button"><a href="requestsign">Add Request</a></button>
         
       </form>
     </div>

@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	
 	<title>Login Page</title>
 	<link rel="stylesheet" type="text/css" href="/views/style.css">
 </head>
@@ -11,8 +12,8 @@
 		<h2>Login</h2>
 		<form action="/login" method="post" id="form">
 			<p>Email</p>
-			<input type="email" name="email" placeholder="Enter Email" , id="email">
-			<p>Password</p>
+			<input class = "form-control" type="email" name="email" placeholder="Enter Email" , id="email">
+			<p>Password</p> 
 			<input type="password" name="password" placeholder="Enter Password" , id="password">
 			<button type="submit">Submit</button>
 			<br>
@@ -54,6 +55,7 @@
 			} catch (error) {
 				console.log(error);
 				alert("An error occurred");
+				window.location.href = 'login';
 			}
 		}
 	</script>

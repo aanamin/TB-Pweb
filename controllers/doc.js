@@ -20,7 +20,9 @@ controller.tampilAllDokumen = async (req, res) => {
 
         if (!token) {
             // Jika token tidak ada, kembalikan pesan error atau arahkan ke halaman login
-            return res.status(401).json({ message: 'Anda tidak memiliki otorisasi untuk mengakses halaman ini.' });
+            return res.status(401).json({
+                message: 'Anda tidak memiliki otorisasi untuk mengakses halaman ini.'
+            });
             // Atau: res.redirect('/login'); untuk mengarahkan ke halaman login
         }
 
@@ -63,60 +65,47 @@ controller.tampilBuatDokumen = async (req, res) => {
 
 //create dokumen
 controller.buatDokumen = async (req, res) => {
+
     try {
+        const userId = req.user.id
         if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).json({
-                message: 'No file uploaded'
-            });
-        }
-        const pdfFile = req.files.pdfFile;
+            return res.status(400).json({ message: 'Tidak ada file yang diunggah' });
+          }
+        const {
+            name,
+            namaFile,
+            description,
 
-        const id = req.body.id;
-        const name = req.body.name;
-        const filename = req.body.filename;
-        const filePath = `uploads/${filename}.pdf`;
-        const description = req.body.description;
-        const created_at = req.body.created_at;
-        const updated_at = req.body.updated_at;
+        } = req.body;
+        const file = req.files.file;
+        const fileExtension = file.name.split('.').pop();
+        const fileName = `${namaFile}.${fileExtension}`;
 
-        pdfFile.mv(filePath, async (error) => {
-            if (error) {
-                console.log(error);
-                
-                return res.status(500).json({
-                    message: 'File upload failed'
-                    
-                });
-            }
-            try {
-                await documents.create({
-                    id: id,
-                    name: name,
-                    filename: filename,
-                    description: description,
-                    filePath: filePath,
-                    created_at: created_at,
-                    updated_at: updated_at
-                });
+        const countDocs = await documents.count();
+        const docId = `doc${countDocs + 1}`;
 
-                // Respon jika berhasil
-                return res.status(200).json({
-                    message: 'File uploaded successfully'
-                });
-            } catch (error) {
-                console.log(error);
-                return res.status(500).json({
-                    message: 'Failed to save file information'
-                });
-            }
+
+        await documents.create({
+            id: docId,
+            id_user: userId,
+            name: name,
+            filename: fileName,
+            description: description
+        });
+
+        // Respon jika berhasil
+        return res.status(200).json({
+            message: 'File uploaded successfully'
         });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: 'Internal server error'
+            message: 'Failed to save file information'
         });
     }
-};
+}
+
+
 
 // controller upload file
 // controller.storage = multer.diskStorage({

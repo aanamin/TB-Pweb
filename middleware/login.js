@@ -18,7 +18,10 @@ const verifyToken = (req, res, next) => {
           next();
         });
     } else {
-      return res.render('login')
+      res.status(400).json({
+        msg: 'Login terlebih dahulu'
+    })
+      return res.redirect('login')
       res.sendStatus(401);
     }
   };

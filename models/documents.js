@@ -10,6 +10,10 @@ var documents = db.define('documents',{
         primaryKey  : true,
         autoIncrement: false
     },
+    id_user : {
+        type        : DataTypes.STRING,
+        allowNull   : false
+    },
     name : {
         type        : DataTypes.STRING,
         allowNull   : false
@@ -22,10 +26,7 @@ var documents = db.define('documents',{
         type        : DataTypes.STRING,
         allowNull   : false
     },
-    filePath:{
-        type: DataTypes.STRING,
-        allowNull:false
-    },
+    
     created_at : {
         type        : DataTypes.DATE,
         allowNull   : false

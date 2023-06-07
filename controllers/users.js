@@ -19,6 +19,7 @@ controllers.tampilRegister = async (req, res) => {
 }
 
 controllers.mainpage = async (req, res) => {
+    
     res.render('mainpage')
 }
 
@@ -27,8 +28,21 @@ controllers.landing = async (req, res) => {
 }
 
 controllers.logout = async (req, res) => {
-    req.session.destroy();
-    res.render('login');
+    try {
+        
+        const userId = req.user.id
+        const userProfile = await user.findOne({where: {
+            id: userId
+        }})
+        if (!userProfile) {
+          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+        }
+        delete req.session.userId;
+        res.render('login');
+      } catch (error) {
+        console.log(error)
+      }
+    
 }
 
 controllers.tampilUpsignature = async (req,res) => {
@@ -108,7 +122,7 @@ controllers.profil = async (req, res) => {
 
 function generateAccessToken(email) {
     return jwt.sign(email, process.env.SECRET_TOKEN, {
-        expiresIn: '60000S'
+        expiresIn: '600S'
     });
 }
 
@@ -173,27 +187,23 @@ controllers.login = async (req, res) => {
                 email: req.body.email
             }
         });
-        // pengguna.password = password
+
         if (!pengguna) {
+            
             return res.status(400).json({
                 message: 'Invalid'
             });
-            res.render('login')
         }
 
         if (password != pengguna.password) {
-            return res.status(200).json({
+           
+            return res.status(400).json({
                 message: 'Password Anda Salah'
             });
-            res.render('login')
 
         }
 
         const id = pengguna.id
-        // const email = pengguna.email
-        const username = pengguna.username
-        const active = pengguna.active
-        const sign_img = pengguna.sign_img
 
         // const token = generateAccessToken({email: req.body.email})
 
@@ -202,16 +212,10 @@ controllers.login = async (req, res) => {
             email
         }, process.env.SECRET_TOKEN);
 
-        // await user.update(
-        //     { remember_token: token },
-        //     {
-        //       where: { email: req.body.email },
-        //     }
-        //   );
 
         res.cookie("token", token, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000,
+            maxAge: 10*60 * 1000,
         })
         res.status(200).json({
             token: token,
@@ -222,6 +226,7 @@ controllers.login = async (req, res) => {
         res.status(400).json({
             msg: 'Login Tidak Berhasil'
         })
+        return res.render('login')
     }
 }
 

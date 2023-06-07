@@ -29,6 +29,46 @@ controllers.tampilRequestsign = async(req,res)=> {
       }
 }
 
+controllers.myrequest = async(req,res)=> {
+   
+    try {
+        
+        const userId = req.user.id
+        const userProfile = await user.findOne({where: {
+            id: userId
+        }})
+        if (!userProfile) {
+          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+        }
+    
+        res.render('myrequest', {
+            user: userProfile
+        });
+      } catch (error) {
+        console.log(error)
+      }
+}
+
+controllers.requestsend = async(req,res)=> {
+   
+    try {
+        
+        const userId = req.user.id
+        const userProfile = await user.findOne({where: {
+            id: userId
+        }})
+        if (!userProfile) {
+          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+        }
+    
+        res.render('requestsend', {
+            user: userProfile
+        });
+      } catch (error) {
+        console.log(error)
+      }
+}
+
 controllers.buatRequest = async(req,res) =>{    
     const accessToken = req.cookies.accessToken 
      if (!accessToken)

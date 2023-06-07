@@ -133,14 +133,7 @@
 <body>
   <header>
     <h4><a href="mainpage">Siletra</a></h4>
-    <nav>
-      <ul>
-        <li><a href="requestsign">request sign</a></li>
-        <li><a href="myrequest">my request</a></li>
-        <li><a href="resources">resources</a></li>
-        <li><a href="profile">profile</a></li>
-      </ul>
-    </nav>
+    <%- include('navbar') %>
   </header>
   <main>
     <p><a href="upSignature">my signature</a></p>
@@ -152,9 +145,9 @@
     <p><%= user.email %></p>
 
     <% if (user.sign_img) { %>
-    <img src="/uploads/<%= user.sign_img %>" alt="Gambar Profil">
+    <img src="/uploads/<%= user.sign_img %>" alt="Gambar TTD">
     <% } else { %>
-    <p>Gambar profil tidak tersedia.</p>
+    <p>Gambar TTD tidak tersedia.</p>
     <% } %>
 
     <input type="submit" value="edit">
