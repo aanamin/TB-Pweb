@@ -9,9 +9,11 @@ server.post('/upload', upload.single('pdfFile'), controller.doc.buatDokumen)
 
 server.post('/update', login, controller.doc.editDokumen)
 server.post('/deleteDocuments/:id', login, controller.doc.deleteDokumen)
+server.get('/detailDocuments/:filename', login, controller.doc.detailDokumen)
 server.post('/find', controller.doc.findDokumen)
 server.get('/resources',login, controller.doc.tampilAllDokumen)
 server.get('/upresources',login, controller.doc.tampilBuatDokumen)
+server.post('/upresources',login, controller.doc.buatDokumen)
 
 server.get('/landing',  controller.user.landing)
 server.post('/signup', controller.user.register)

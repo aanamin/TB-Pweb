@@ -11,6 +11,7 @@ const uploadRoute = require('./routes/user.js');
 
 app.use(fileUpload());
 app.use('/upSignature', uploadRoute);
+app.use('/upresources', uploadRoute);
 
 app.use(methodOverride('_method'));
 app.use(cookieParser());

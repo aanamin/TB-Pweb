@@ -28,16 +28,16 @@
 			<div class="collapse navbar-collapse" id="navbarText">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
-						<a class="nav-link" href="requestsign.html">request sign</a>
+						<a class="nav-link" href="requestsign">request sign</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="myrequest.html">my request</a>
+						<a class="nav-link" href="myrequest">my request</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="resources.html">resources</a>
+						<a class="nav-link" href="resources">resources</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="profile.html">profile</a>
+						<a class="nav-link" href="profile">profile</a>
 					</li>
 				</ul>
 				<span class="navbar-text">
@@ -55,37 +55,36 @@
 	<div class="container">
 		<div class="card">
 			<div class="container">
-				<form action="/upload" method="post" enctype="multipart/form-data">
-					
-					<label for="pdfFile">Select PDF File:</label>
-					<input type="file" name="pdfFile" id="pdfFile">
-					<br>
-					<label for="id">ID :</label>
-					<br>
-					<input type="text" name="id" id="id">
-					<br>
-					<br>
-					<label for="name">Name:</label>
-					<br>
-					<input type="text" name="name" id="name">
-					<br>
-					<label for="fileName">File Name:</label>
-					<br>
-					<input type="text" name="fileName" id="fileName">
-					<br>
-					<label for="description">Description:</label>
-					<br>
-					<textarea name="description" id="description"></textarea>
-					<br>
-					<input type="submit" value="Upload">
+				<form action="/upresources" method="post" enctype="multipart/form-data">
+				  <label for="pdfFile">Select PDF File:</label>
+				  <input type="file" name="file" accept=".pdf">
+				  <br>
+				  <br>
+				  <label for="name">Name:</label>
+				  <br>
+				  <input type="text" name="name" id="name">
+				  <br>
+				  <label for="fileName">File Name:</label>
+				  <br>
+				  <input type="text" name="namaFile" id="fileName">
+				  <br>
+				  <label for="description">Description:</label>
+				  <br>
+				  <textarea name="description" id="description"></textarea>
+				  <br>
+				  <input type="submit" value="Upload">
 				</form>
-			</div>
+			  </div>
 		</div>
 
 	</div>
 	<footer>
 		<p>&copy; Siletra 2023. All rights reserved.</p>
 	</footer>
+
+
+
+	
 </body>
 
 </html>

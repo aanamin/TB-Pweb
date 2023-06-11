@@ -43,7 +43,7 @@ body {
 	margin-bottom: 20px;
 }
 
-.login-box input[type="text"],
+.login-box input[type="email"],
 .login-box input[type="password"] {
 	border: none;
 	border-bottom: 1px solid #777;
@@ -154,3 +154,161 @@ body {
 .signup-box a:hover {
 	color: #1e8bc3;
 }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #8eafd5;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  header h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  header nav li {
+    margin-left: 24px;
+  }
+  
+  header nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  header nav a:hover {
+    color: #000;
+  }
+  
+  /* Main styles */
+  main {
+    padding: 32px;
+  }
+  
+  main h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  main h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  main h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 32px;
+    margin-bottom: 8px;
+  }
+  
+  main ul {
+    list-style: disc;
+    margin: 16px 0;
+    padding-left: 32px;
+  }
+  
+  .notification-menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .notification-menu-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    border-radius: 5px;
+    top: 40px;
+    right: 0;
+  }
+  
+  .notification-menu:hover .notification-menu-content {
+    display: block;
+  }
+  
+  .notification {
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+  }
+  
+  .notification a {
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .feedback {
+    width: 100%;
+    padding: 12px;
+    margin-top: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .submit-btn {
+    padding: 12px 24px;
+    background-color: #008000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #006600;
+  }
+  
+		.notification-menu {
+			position: relative;
+			display: inline-block;
+		}
+
+		.notification-menu-content {
+			display: none;
+			position: relative;
+			z-index: 1;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			padding: 12px 16px;
+			border-radius: 5px;
+		}
+
+		.notification-menu:hover .notification-menu-content {
+			display: block;
+		}
+
+		.notification {
+			margin-bottom: 8px;
+			padding: 8px;
+			background-color: #f2f2f2;
+			border-radius: 5px;
+		}
+
+		.notification a {
+			color: #000;
+			text-decoration: none;
+		}

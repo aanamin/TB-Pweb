@@ -3,6 +3,7 @@ const {
     or
 } = require('sequelize');
 const documents = require('../models/documents');
+const user = require('../models/user')
 const models = require('../models/index');
 const controller = {}
 const jwt = require('jsonwebtoken')
@@ -14,31 +15,33 @@ const {
 
 
 //tampil page All dokumen
-controller.tampilAllDokumen = async (req, res) => {
-    try {
-        const token = req.cookies.token; // Mengambil token dari cookies
+    controller.tampilAllDokumen = async (req, res) => {
+        try {
+            const token = req.cookies.token; // Mengambil token dari cookies
+            const userId = req.user.id;
+            if (!token) {
+                // Jika token tidak ada, kembalikan pesan error atau arahkan ke halaman login
+                return res.status(401).json({
+                    message: 'Anda tidak memiliki otorisasi untuk mengakses halaman ini.'
+                });
+                // Atau: res.redirect('/login'); untuk mengarahkan ke halaman login
+            }
 
-        if (!token) {
-            // Jika token tidak ada, kembalikan pesan error atau arahkan ke halaman login
-            return res.status(401).json({
-                message: 'Anda tidak memiliki otorisasi untuk mengakses halaman ini.'
-            });
-            // Atau: res.redirect('/login'); untuk mengarahkan ke halaman login
+            const dokumen = await documents.findAll({where: {
+                id_user: userId
+            }}); // Ambil semua data dokumen dari database
+
+            if (!dokumen) {
+                return res.status(200).json("Tidak dapat ditemukan");
+            }
+
+            res.render('resources', {
+                dokumen
+            }); // Kirim data dokumen ke halaman resources.ejs
+        } catch (error) {
+            res.status(500).send(error);
         }
-
-        const dokumen = await documents.findAll(); // Ambil semua data dokumen dari database
-
-        if (!dokumen) {
-            return res.status(200).json("Tidak dapat ditemukan");
-        }
-
-        res.render('resources', {
-            dokumen
-        }); // Kirim data dokumen ke halaman resources.ejs
-    } catch (error) {
-        res.status(500).send(error);
-    }
-};
+    };
 
 //read dokumen
 controller.cekDokumen = async (req, res) => {
@@ -60,7 +63,22 @@ controller.cekDokumen = async (req, res) => {
 
 //tampil buat dokumen
 controller.tampilBuatDokumen = async (req, res) => {
-    res.render('upresources')
+    try {
+        
+        const userId = req.user.id
+        const userProfile = await user.findOne({where: {
+            id: userId
+        }})
+        if (!userProfile) {
+          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+        }
+    
+        res.render('upresources', {
+            user: userProfile
+        });
+      } catch (error) {
+        console.log(error)
+      }
 }
 
 //create dokumen
@@ -69,8 +87,10 @@ controller.buatDokumen = async (req, res) => {
     try {
         const userId = req.user.id
         if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).json({ message: 'Tidak ada file yang diunggah' });
-          }
+            return res.status(400).json({
+                message: 'Tidak ada file yang diunggah'
+            });
+        }
         const {
             name,
             namaFile,
@@ -81,21 +101,29 @@ controller.buatDokumen = async (req, res) => {
         const fileExtension = file.name.split('.').pop();
         const fileName = `${namaFile}.${fileExtension}`;
 
-        const countDocs = await documents.count();
-        const docId = `doc${countDocs + 1}`;
+        file.mv(`uploads/${fileName}`, async (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: 'Terjadi kesalahan saat mengunggah file'
+                });
+            }
+            const countDocs = await documents.count();
+            const docId = `doc${countDocs + 1}`;
 
 
-        await documents.create({
-            id: docId,
-            id_user: userId,
-            name: name,
-            filename: fileName,
-            description: description
-        });
+            await documents.create({
+                id: docId,
+                id_user: userId,
+                name: name,
+                filename: fileName,
+                description: description
+            });
 
-        // Respon jika berhasil
-        return res.status(200).json({
-            message: 'File uploaded successfully'
+            // Respon jika berhasil
+            
+           
+           res.redirect('resources')
         });
     } catch (error) {
         console.log(error);
@@ -128,9 +156,7 @@ controller.editDokumen = async (req, res) => {
             id: id,
             name: name,
             filename: filename,
-            description: description,
-            created_at: created_at,
-            updated_at: updated_at
+            description: description
         }, {
             where: {
                 id: id
@@ -165,6 +191,13 @@ controller.deleteDokumen = async (req, res) => {
     } catch (err) {
         console.log(err)
     }
+}
+
+controller.detailDokumen = async (req,res)=>{
+    const { filename } = req.params;
+    const filePath = path.join(__dirname, '../uploads', filename);
+
+  res.sendFile(filePath);
 }
 
 // mencari dokumen
