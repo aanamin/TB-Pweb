@@ -27,7 +27,7 @@ const {
                 // Atau: res.redirect('/login'); untuk mengarahkan ke halaman login
             }
 
-            const dokumen = await documents.findAll({where: {
+            const dokumen = await models.documents.findAll({where: {
                 id_user: userId
             }}); // Ambil semua data dokumen dari database
 

@@ -113,7 +113,7 @@ controllers.profil = async (req, res) => {
         }
     
         res.render('profile', {
-            user: userProfile
+            user: userProfile                           
         });
       } catch (error) {
         console.log(error)
@@ -122,7 +122,7 @@ controllers.profil = async (req, res) => {
 
 function generateAccessToken(email) {
     return jwt.sign(email, process.env.SECRET_TOKEN, {
-        expiresIn: '600S'
+        expiresIn: '6000S'
     });
 }
 
@@ -215,7 +215,7 @@ controllers.login = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            maxAge: 10*60 * 1000,
+            maxAge: 100*60 * 1000,
         })
         res.status(200).json({
             token: token,

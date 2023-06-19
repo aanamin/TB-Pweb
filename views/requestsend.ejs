@@ -62,22 +62,18 @@
     <div class="container">
     <div class="card" style="width: rem; background: #8DAFD5;">
       <form>
-        <label for="receiver">Receiver :</label>
-        <select class="selectpicker" data-live-search="true">
-          <option value="" disabled selected>Nama Receiver</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select><br>
+        <label for="receiver">Email Penerima :</label>
+        <input class = "form-control" type="email" name="email" placeholder="Enter Email" , id="email">
         <br>
         
         <label for="jabatan">jabatan :</label>
-        <input class="form-control" type="text" placeholder="Jabatan" aria-label="default input example">
+        <input class="form-control" type="text" placeholder="Jabatan" aria-label="default input example", id="jabatan">
         <br>
-        <form action="upload.php" method="post" enctype="multipart/form-data">
-          <input type="file" name="file">
-          <input type="submit" value="Upload">
-        </form>
+        
+        <label for="dokumen">Dokumen :</label>
+        <input class="form-control" type="text" placeholder="Dokumen" aria-label="default input example", id="dokumen">
+        <br>
+        
         <br>
         <br>
       </div>

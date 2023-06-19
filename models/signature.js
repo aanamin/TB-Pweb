@@ -17,7 +17,7 @@ var signature = db.define('signature',{
         primaryKey  : true,
         autoIncrement: false
     },
-    nama_tujuan : {
+    id_tujuan : {
         type        : DataTypes.STRING,
         allowNull   : false
     },
@@ -27,11 +27,11 @@ var signature = db.define('signature',{
     },
     status :{
         type        : DataTypes.STRING,
-        allowNull   : false
+        allowNull   : true 
     },
     signed_at : {
         type        : DataTypes.DATEONLY,
-        allowNull   : false
+        allowNull   : true
     },
     created_at : {
         type        : DataTypes.DATEONLY,

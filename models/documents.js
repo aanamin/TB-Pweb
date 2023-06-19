@@ -35,12 +35,13 @@ var documents = db.define('documents',{
         type        : DataTypes.DATE,
         allowNull   : false
     }
-}, {
+}, 
+{
     freezeTableName : true,
     timestamps  : true,
     createdAt:'created_at',
     updatedAt: 'updated_at'
 })
 
-// documents.hasMany(signature);
+
 module.exports = documents

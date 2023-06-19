@@ -73,10 +73,10 @@
 							<td>
 								<form action="/deleteDocuments/<%= documents.id %>" method="POST">
 									<input type="hidden" name="_method" value="DELETE">
-									<button type="submit">Delete</button>
+									<button class="btn btn-danger btn-sm" type="submit">Delete</button>
 								  </form>
 								  <form action="/detailDocuments/<%= documents.filename %>" method="GET">
-									<button type="submit">Detail</button>
+									<button class="btn btn-info btn-sm" type="submit">Detail</button>
 								  </form>
 							</td>
 
