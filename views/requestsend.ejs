@@ -61,7 +61,7 @@
     <h1 align = "center">Send Request</h1>
     <div class="container">
     <div class="card" style="width: rem; background: #8DAFD5;">
-      <form>
+      <form action="/requestsend" method="post" id="form">
         <label for="receiver">Email Penerima :</label>
         <input class = "form-control" type="email" name="email" placeholder="Enter Email" , id="email">
         <br>
@@ -71,17 +71,65 @@
         <br>
         
         <label for="dokumen">Dokumen :</label>
-        <input class="form-control" type="text" placeholder="Dokumen" aria-label="default input example", id="dokumen">
+       
         <br>
-        
+        <select name="dokumen" id="dokumen">
+          <% dokumen.forEach((document) => { %>
+            <option value="<%=document.id%>"><%= document.filename %></option>
+            <% }) %>
+          </select>
+          
         <br>
+        <br>
+        <button type="submit" class="btn btn-success" >Add Request</button>
         <br>
       </div>
-        <button class="send-button"><a href="requestsign">Add Request</a></button>
+        <!-- <button class="send-button">Add Request</a></button> -->
         
       </form>
     </div>
-      
+      <script>
+        const form = document.getElementById('form');
+        form.addEventListener('submit',requestsend);
+        async function requestsend(event){
+          event.preventDefault();
+          
+          const email = document.getElementById('email').value;
+          const jabatan = document.getElementById('jabatan').value;
+          const dokumen = document.getElementById('dokumen').value;
+
+          try{
+            const response = await fetch("http://localhost:3000/requestsend",{
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email,
+                jabatan,
+                dokumen
+              }),
+            });
+            console.log(dokumen);
+            const result = await response.json();
+            if (response.ok){
+              alert(result.msg);
+              window.location.href = 'myrequest';
+            }else{
+              alert(result.msg);
+              window.location.href = 'requestsend';
+            }
+          }catch(error){
+            console.log(error);
+            alert("An error occured");
+            window.location.href = 'requestsend';
+            console.log(dokumen);
+          }
+          
+          
+        }
+        
+      </script>
     <footer>
 		<p>&copy; Siletra 2023. All rights reserved.</p>
 	</footer>

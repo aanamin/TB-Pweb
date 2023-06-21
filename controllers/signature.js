@@ -81,6 +81,37 @@ controllers.requestsign = async (req, res) => {
   }
 }
 
+controllers.tampilrequestsend = async (req, res) => {
+
+  try {
+
+    const userId = req.user.id
+    const userProfile = await user.findOne({
+      where: {
+        id: userId
+      }
+    })
+    if (!userProfile) {
+      return res.status(404).json({
+        message: 'Profil pengguna tidak ditemukan.'
+      });
+    }
+    const doc = await models.documents.findAll({
+      where:{
+        id_user: userId
+      }
+    })
+
+    res.render('requestsend', {
+      user: userProfile,
+      dokumen: doc
+
+    });
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 controllers.requestsend = async (req, res) => {
 
   try {
@@ -107,25 +138,54 @@ controllers.requestsend = async (req, res) => {
       jabatan,
       dokumen
     } = req.body
+    const status = 'waiting'
     const tujuan = await models.user.findOne({
       where: {
         email: email,
 
       }
     })
+    if(!tujuan){
+      return res.status(404).json({
+        message: 'maaf email tidak ditemukan'
+      })
+    }
 
-    await signature.create({
+    const ttd = await models.signature.create({
       user_id : userId,
       id_tujuan: tujuan.id,
       document_id: dokumen,
-      jabatan: jabatan
+      jabatan: jabatan,
+      status: status,
     })
     
-    res.render('requestsend', {
-      user: userProfile,
-      dokumen: doc
-
+    
+    res.status(200).json({
+     msg:'Data Berhasil Ditambahkan',
+     ttd: ttd,
+     success: true
     });
+  } catch (error) {
+    res.status(400).json({
+      msg:'terdapat Eror'
+    })
+    console.log(error)
+  }
+}
+
+controllers.deleteMyrequest = async (req,res) => {
+  try {
+    const userId = req.user.id
+
+    const hapus = await models.signature.destroy({
+      where: {
+        user_id: req.body.user_id,
+        document_id: req.body.document_id
+
+      }
+
+    })
+    res.redirect('/myrequest')
   } catch (error) {
     console.log(error)
   }

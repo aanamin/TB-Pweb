@@ -9,6 +9,7 @@ const controller = {}
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs');
 const {
     Op
 } = require("sequelize");
@@ -175,6 +176,25 @@ controller.deleteDokumen = async (req, res) => {
 
     try {
         const id = req.params.id;
+
+        const dokumen = await documents.findOne({
+            where: {
+              id
+            }
+          });
+          if (!dokumen) {
+            return res.status(404).json({
+              pesan: 'Dokumen tidak ditemukan.'
+            });
+          }
+
+          const filePath = path.join(__dirname, '..', 'uploads', dokumen.filename);
+
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error('Gagal menghapus file:', err);
+            }
+          });
         // Proses penghapusan dokumen berdasarkan ID yang diterima
         await documents.destroy({
             where: {

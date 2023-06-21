@@ -29,5 +29,7 @@ server.get('/logout',login,   controller.user.logout)
 
 server.get('/myrequest', login, controller.signature.myrequest)
 server.get('/requestsign', login, controller.signature.requestsign)
-server.get('/requestsend', login, controller.signature.requestsend)
+server.get('/requestsend', login, controller.signature.tampilrequestsend)
+server.post('/requestsend', login, controller.signature.requestsend)
+server.post('/deleteMyrequest', login, controller.signature.deleteMyrequest)
 module.exports = server

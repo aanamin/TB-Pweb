@@ -61,6 +61,7 @@
 						<th>Jabatan</th>
 						<th>File Name</th>
 						<th>Status</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -73,8 +74,17 @@
 						<td><a
 								href="/detailDocuments/<%= signature.document.filename %>"><%= signature.document.filename%></a>
 						</td>
+						<td><%= signature.status %></td>
+						<td>
+							<form id="deleteForm" action="/deleteMyrequest" method="POST">
+								<input type="hidden" name="_method" value="DELETE">
+								<input type="hidden" name="user_id" value="<%= signature.user_id %>">
+								<input type="hidden" name="document_id" value="<%= signature.document_id %>">
+								<button class="btn btn-danger btn-sm" type="submit">Delete</button>
+							</form>
+						</td>
 
-						
+
 
 					</tr>
 					<% }); %>
@@ -83,6 +93,19 @@
 		</div>
 		<button type="button" onclick="window.location.href='requestsend'" class="btn btn-primary">Make Request</button>
 	</div>
+	<script>
+		const deleteForm = document.getElementById('deleteForm');
+	  
+		deleteForm.addEventListener('submit', function(event) {
+		  event.preventDefault();
+	  
+		  const confirmation = confirm("Are you sure you want to delete this record?");
+	  
+		  if (confirmation) {
+			deleteForm.submit();
+		  }
+		});
+	  </script>
 	<footer>
 		<p>&copy; Siletra 2023. All rights reserved.</p>
 	</footer>
