@@ -32,4 +32,5 @@ server.get('/requestsign', login, controller.signature.requestsign)
 server.get('/requestsend', login, controller.signature.tampilrequestsend)
 server.post('/requestsend', login, controller.signature.requestsend)
 server.post('/deleteMyrequest', login, controller.signature.deleteMyrequest)
+server.post('/makeDecision', login, controller.signature.decisionRequest)
 module.exports = server

@@ -92,7 +92,7 @@ controllers.upsignature = async (req,res) => {
             }
           });
     
-          return res.status(200).json({ message: 'File berhasil diunggah', file: uploadedFile });
+          return res.status(200).json({ message: 'File berhasil diunggah', file: uploadedFile, success: true });
         });
       } catch (error) {
         console.log(error)
@@ -211,7 +211,6 @@ controllers.login = async (req, res) => {
             id,
             email
         }, process.env.SECRET_TOKEN);
-
 
         res.cookie("token", token, {
             httpOnly: true,

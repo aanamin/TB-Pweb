@@ -87,17 +87,81 @@
             <td><%= signature.Sender.username%></td>
             <td><%= signature.jabatan %></td>
             <td><a href="/detailDocuments/<%= signature.document.filename %>"><%= signature.document.filename%></a></td>
-            
+            <td>
+              <form id="decisionForm-<%= signature.document_id %>" action="/makeDecision" method="POST">
+                <input type="hidden" name="_method" value="PUT">
 
-            
+                <!-- Tombol untuk menolak -->
+                <input type="hidden" name="user_id" value="<%= signature.user_id %>">
+                <input type="hidden" name="document_id" value="<%= signature.document_id %>">
+                <button class="btn btn-danger btn-sm" type="submit" name="decision" value="reject">Reject</button>
 
+                <!-- Tombol untuk menerima -->
+                <input type="hidden" name="user_id" value="<%= signature.user_id %>">
+                <input type="hidden" name="document_id" value="<%= signature.document_id %>">
+                <button class="btn btn-success btn-sm" type="submit" name="decision" value="accept">Accept</button>
+              </form>
+              </form>
+            </td>
           </tr>
           <% }); %>
         </tbody>
       </table>
     </div>
-    
+
   </div>
+  <script>
+  
+    const decisionForm = document.getElementById('decisionForm-<%= signature.document_id %>');
+    decisionForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const decision = decisionForm.elements.decision.value;
+      const user_id = decisionForm.dataset.user_id;
+      const document_id = decisionForm.dataset.document_id;
+
+      if (decision === 'accept') {
+        const confirmation = confirm("Are you sure you want to accept this document?");
+        if (confirmation) {
+          makeDecision(decision, user_id, document_id);
+        }
+      } else if (decision === 'reject') {
+        const confirmation = confirm("Are you sure you want to reject this document?");
+        if (confirmation) {
+          makeDecision(decision, user_id, document_id);
+        }
+      }
+    });
+
+  function makeDecision(decision, user_id, document_id) {
+    const url = "http://localhost:3000/makeDecision";
+    const body = {
+      decision,
+      user_id,
+      document_id
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+      .then(response => {
+        if (response.ok) {
+          // Tindakan berhasil, lakukan sesuatu (misalnya, tampilkan pesan sukses)
+          console.log("Decision processed successfully");
+        } else {
+          // Tindakan gagal, lakukan sesuatu (misalnya, tampilkan pesan kesalahan)
+          console.error("Failed to process decision");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+  }
+</script>
   <footer>
     <p>&copy; Siletra 2023. All rights reserved.</p>
   </footer>
