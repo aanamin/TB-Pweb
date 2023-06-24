@@ -30,15 +30,19 @@ controllers.landing = async (req, res) => {
 controllers.logout = async (req, res) => {
     try {
         
-        const userId = req.user.id
-        const userProfile = await user.findOne({where: {
-            id: userId
-        }})
-        if (!userProfile) {
-          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
-        }
-        delete req.session.userId;
-        res.render('login');
+        req.session.destroy((err) => {
+            if (err) {
+                console.log(err);
+                return res.status(400).json({
+                    success: false,
+                    msg: 'Cant logout',
+                });
+            }
+        
+            res.clearCookie('accessToken');
+            
+            res.render('login')
+          });
       } catch (error) {
         console.log(error)
       }
@@ -120,12 +124,6 @@ controllers.profil = async (req, res) => {
       }
 }
 
-function generateAccessToken(email) {
-    return jwt.sign(email, process.env.SECRET_TOKEN, {
-        expiresIn: '6000S'
-    });
-}
-
 
 controllers.getAllUser = async (req, res) => {
     const users = await models.user.findAll({})
@@ -175,7 +173,11 @@ controllers.register = async (req, res) => {
     }
 }
 
-
+function generateAccessToken(email) {
+    return jwt.sign(email, process.env.SECRET_TOKEN, {
+        expiresIn: '6000S'
+    });
+}
 controllers.login = async (req, res) => {
     try {
         const {
@@ -204,15 +206,19 @@ controllers.login = async (req, res) => {
         }
 
         const id = pengguna.id
+        if (!req.session.user) {
+            req.session.user = {};
+        }
 
-        // const token = generateAccessToken({email: req.body.email})
-
+        req.session.user.id = id;
         const token = generateAccessToken({
             id,
             email
         }, process.env.SECRET_TOKEN);
+        // const token = generateAccessToken({email: req.body.email})
 
-        res.cookie("token", token, {
+
+        res.cookie("accessToken", token, {
             httpOnly: true,
             maxAge: 100*60 * 1000,
         })
@@ -222,6 +228,7 @@ controllers.login = async (req, res) => {
             success: true
         });
     } catch (error) {
+        console.log(error)
         res.status(400).json({
             msg: 'Login Tidak Berhasil'
         })

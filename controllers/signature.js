@@ -200,6 +200,24 @@ controllers.deleteMyrequest = async (req, res) => {
   }
 }
 
+controllers.tampileditMyrequest = async (req,res) =>{
+  try {
+    // const userId = req.user.id
+    const document_id = req.body.document_id
+
+    const signature = await models.signature.findOne({
+      where: { 
+        document_id: document_id
+      }
+    })
+    res.render('editRequestsend', {
+      signature: signature
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 controllers.decisionRequest = async (req, res) => {
   try {
 

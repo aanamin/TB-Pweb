@@ -7,7 +7,8 @@ dotenv.config();
 const SECRET_TOKEN = process.env.SECRET_TOKEN;
 const verifyToken = (req, res, next) => {
     
-    const token  = req.cookies.token;
+
+    const token  = req.cookies.accessToken;
     if (token) {
         jwt.verify(token, SECRET_TOKEN, (err, user) => {
           if (err) {

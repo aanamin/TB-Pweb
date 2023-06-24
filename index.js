@@ -8,6 +8,13 @@ const methodOverride = require('method-override');
 const auth = require('./routes/user.js')
 const fileUpload = require('express-fileupload');
 const uploadRoute = require('./routes/user.js');
+const session = require('express-session');
+
+app.use(session({
+  secret: 'amin',
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use(fileUpload());
 app.use('/upSignature', uploadRoute);
