@@ -1,5 +1,5 @@
 const {
-  or
+  or, where
 } = require('sequelize');
 const signature = require('../models/signature');
 const user = require('../models/user')
@@ -37,7 +37,6 @@ controllers.myrequest = async (req, res) => {
         user_id: userId
       }
     })
-
 
     res.render('myrequest', {
 
@@ -202,18 +201,97 @@ controllers.deleteMyrequest = async (req, res) => {
 
 controllers.tampileditMyrequest = async (req,res) =>{
   try {
-    // const userId = req.user.id
+    const userId = req.user.id
     const document_id = req.body.document_id
-
     const signature = await models.signature.findOne({
-      where: { 
-        document_id: document_id
+      include: [{
+        model: models.user ,
+        as: 'Receiver',
+        attribute: ['email'],
+      },
+    ],
+    where: { 
+      document_id: document_id,
+      user_id: userId
+    }
+    })
+
+    const status = signature.status
+    if(status ==='accept'){
+      return res.status(404).json({
+        success: false,
+        message: 'maaf, dokumen ini sudah ditanda tangani'
+      })
+    }
+    if (status ==='reject') {
+      return res.status(404).json({
+        success: false,
+        message: 'maaf, dokumen ini sudah ditanda tangani'
+      })
+    }
+    if(!signature){
+      return res.status(404).json({
+        success: false,
+        message: 'Tidak ada tanda tangan dengan id tersebut'
+      })
+    }
+    const doc = await models.documents.findAll({
+      where: {
+        id_user : userId
       }
     })
+    if(!doc){
+      return res.status(404).json({
+        success: false,
+        message: 'Tidak ada dokumen dengan id tersebut'
+      })
+    }
     res.render('editRequestsend', {
-      signature: signature
+      signature: signature,
+      dokumen : doc
     })
   } catch (error) {
+    console.log(error)
+  }
+}
+
+//edit myrequest
+controllers.ubahMyRequest = async (req, res) => {
+  try {
+    const { user_id, document_id, email, jabatan, dokumen } = req.body;
+    const user = await models.user.findOne({
+      where: {
+        email: email
+      }
+    })
+
+    if(!user){
+      return res.status(404).json({
+        success: false,
+        message: 'email tersebut tidak terdaftar'
+      })
+    }
+    
+    const newSignature = await models.signature.update({
+     
+      id_tujuan : user.id,
+      jabatan: jabatan,
+      document_id: dokumen
+    }, {where: {
+      user_id: user_id,
+      document_id: document_id
+    }})
+
+    res.status(200).json({
+      msg: 'Data Berhasil Ditambahkan',
+      dataBaru: newSignature,
+      success: true
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      msg: 'terdapat Eror'
+    })
     console.log(error)
   }
 }
@@ -268,6 +346,17 @@ controllers.decisionRequest = async (req, res) => {
 
       const pdfBytesWithImage = await pdfDoc.save();
       await fs.promises.writeFile(newFilePath, pdfBytesWithImage);
+
+      const currentTime = new Date()
+      // console.log(currentTime)
+      await models.signature.update({
+        signed_at: currentTime
+      }, {
+        where: {
+          user_id,
+          document_id
+        }
+      });
     }
     await models.signature.update({
       status: decision

@@ -61,31 +61,29 @@
     <h1 align = "center">Send Request</h1>
     <div class="container">
     <div class="card" style="width: rem; background: #8DAFD5;">
-      <form action="/requestsend" method="post" id="form">
+      <form action="/ubahMyRequest" method="POST" id="form">
+        <input type="hidden" id="user_idAwal" name="user_id" value="<%= signature.user_id %>">
+        <input type="hidden" id="document_idAwal" name="document_id" value="<%= signature.document_id %>">
+      
         <label for="receiver">Email Penerima :</label>
-        <input class = "form-control" type="email" name="email" placeholder="Enter Email" , id="email">
+        <input class="form-control" type="email" name="email"  id="email" placeholder="<%= signature.Receiver.email %>">
         <br>
-        
+      
         <label for="jabatan">jabatan :</label>
-        <input class="form-control" type="text" placeholder="Jabatan" aria-label="default input example", id="jabatan">
+        <input class="form-control" type="text" name="jabatan"  id="jabatan" placeholder="<%= signature.jabatan %>">
         <br>
-        
+      
         <label for="dokumen">Dokumen :</label>
-       
         <br>
         <select name="dokumen" id="dokumen">
           <% dokumen.forEach((document) => { %>
             <option value="<%=document.id%>"><%= document.filename %></option>
             <% }) %>
           </select>
-          
         <br>
         <br>
-        <button type="submit" class="btn btn-success" >Add Request</button>
+        <button type="submit" class="btn btn-success">Edit Request</button>
         <br>
-      </div>
-        <!-- <button class="send-button">Add Request</a></button> -->
-        
       </form>
     </div>
       <script>
@@ -94,36 +92,38 @@
         async function requestsend(event){
           event.preventDefault();
           
+          const user_id = document.getElementById('user_idAwal').value;
+          const document_id = document.getElementById('document_idAwal').value;
           const email = document.getElementById('email').value;
           const jabatan = document.getElementById('jabatan').value;
           const dokumen = document.getElementById('dokumen').value;
 
           try{
-            const response = await fetch("http://localhost:3000/requestsend",{
+            const response = await fetch("http://localhost:3000/ubahMyRequest",{
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
+                user_id,
+                document_id,
                 email,
                 jabatan,
                 dokumen
               }),
             });
-            console.log(dokumen);
             const result = await response.json();
             if (response.ok){
               alert(result.msg);
               window.location.href = 'myrequest';
             }else{
               alert(result.msg);
-              window.location.href = 'requestsend';
+              window.location.href = 'editRequestsend';
             }
           }catch(error){
             console.log(error);
-            alert("An error occured");
-            window.location.href = 'requestsend';
-            console.log(dokumen);
+            alert(error);
+            window.location.href = 'editRequestsend';
           }
           
           

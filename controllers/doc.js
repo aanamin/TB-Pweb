@@ -1,6 +1,6 @@
 // const { now } = require('sequelize/types/utils');
 const {
-    or
+    or, where
 } = require('sequelize');
 const documents = require('../models/documents');
 const user = require('../models/user')
@@ -16,33 +16,35 @@ const {
 
 
 //tampil page All dokumen
-    controller.tampilAllDokumen = async (req, res) => {
-        try {
-            const token = req.cookies.token; // Mengambil token dari cookies
-            const userId = req.user.id;
-            if (!token) {
-                // Jika token tidak ada, kembalikan pesan error atau arahkan ke halaman login
-                return res.status(401).json({
-                    message: 'Anda tidak memiliki otorisasi untuk mengakses halaman ini.'
-                });
-                // Atau: res.redirect('/login'); untuk mengarahkan ke halaman login
-            }
-
-            const dokumen = await models.documents.findAll({where: {
-                id_user: userId
-            }}); // Ambil semua data dokumen dari database
-
-            if (!dokumen) {
-                return res.status(200).json("Tidak dapat ditemukan");
-            }
-
-            res.render('resources', {
-                dokumen
-            }); // Kirim data dokumen ke halaman resources.ejs
-        } catch (error) {
-            res.status(500).send(error);
+controller.tampilAllDokumen = async (req, res) => {
+    try {
+        const token = req.cookies.accessToken; // Mengambil token dari cookies
+        const userId = req.user.id;
+        if (!token) {
+            // Jika token tidak ada, kembalikan pesan error atau arahkan ke halaman login
+            return res.status(401).json({
+                message: 'Anda tidak memiliki otorisasi untuk mengakses halaman ini.'
+            });
+            // Atau: res.redirect('/login'); untuk mengarahkan ke halaman login
         }
-    };
+
+        const dokumen = await models.documents.findAll({
+            where: {
+                id_user: userId
+            }
+        }); // Ambil semua data dokumen dari database
+
+        if (!dokumen) {
+            return res.status(200).json("Tidak dapat ditemukan");
+        }
+
+        res.render('resources', {
+            dokumen
+        }); // Kirim data dokumen ke halaman resources.ejs
+    } catch (error) {
+        res.status(500).send(error);
+    }
+};
 
 //read dokumen
 controller.cekDokumen = async (req, res) => {
@@ -65,21 +67,25 @@ controller.cekDokumen = async (req, res) => {
 //tampil buat dokumen
 controller.tampilBuatDokumen = async (req, res) => {
     try {
-        
+
         const userId = req.user.id
-        const userProfile = await user.findOne({where: {
-            id: userId
-        }})
+        const userProfile = await user.findOne({
+            where: {
+                id: userId
+            }
+        })
         if (!userProfile) {
-          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+            return res.status(404).json({
+                message: 'Profil pengguna tidak ditemukan.'
+            });
         }
-    
+
         res.render('upresources', {
             user: userProfile
         });
-      } catch (error) {
+    } catch (error) {
         console.log(error)
-      }
+    }
 }
 
 //create dokumen
@@ -110,7 +116,17 @@ controller.buatDokumen = async (req, res) => {
                 });
             }
             const countDocs = await documents.count();
-            const docId = `doc${countDocs + 1}`;
+            let docId = `doc${countDocs + 1}`;
+            const idDoc = await models.documents.findOne({
+                where: {
+                    id: docId
+                }
+            })
+
+            if (idDoc) {
+                docId = `doc${countDocs + 1}${name}`;
+
+            }
 
 
             await documents.create({
@@ -121,10 +137,9 @@ controller.buatDokumen = async (req, res) => {
                 description: description
             });
 
-            // Respon jika berhasil
-            
-           
-           res.redirect('resources')
+
+
+            res.redirect('resources')
         });
     } catch (error) {
         console.log(error);
@@ -135,39 +150,122 @@ controller.buatDokumen = async (req, res) => {
 }
 
 
-
-// controller upload file
-// controller.storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, documents.name + path.extname(file.originalname))
-//     }
-// })
-
 // updatedokumen
-controller.editDokumen = async (req, res) => {
-    let id = req.body.id;
-    let name = req.body.name;
-    let filename = req.body.filename;
-    let description = req.body.description;
-    let created_at = req.body.created_at;
-    let updated_at = req.body.updated_at;
+controller.tampilEditDokumen = async (req, res) => {
 
     try {
-        await documents.update({
-            id: id,
-            name: name,
-            filename: filename,
-            description: description
-        }, {
+        const userId = req.user.id
+        const document_id = req.body.documents_id
+
+        const dokumen = await models.documents.findOne({
             where: {
-                id: id
+                id: document_id
             }
         })
-        return res.json({
-            pesan: "berhasil update data"
+        if (!dokumen) {
+            return res.status(404).json({
+                success: false,
+                message: 'Tidak ada dokumen dengan id tersebut'
+            })
+        }
+        const signature = await models.signature.findOne({
+            where: {
+                user_id: userId,
+                document_id: document_id
+            }
         })
-    } catch (err) {
-        console.log(err)
+        const status = signature.status;
+        if (status === 'accept') {
+            return res.status(404).json({
+                success: false,
+                message: 'maaf, dokumen ini sudah ditanda tangani'
+            })
+        }
+        if (status === 'reject') {
+            return res.status(404).json({
+                success: false,
+                message: 'maaf, dokumen ini sudah ditanda tangani'
+            })
+        }
+
+        res.render('editUpresources', {
+            dokumen: dokumen
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+controller.editDokumen = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const idDoc = req.body.document_id
+        const dokumen = await models.documents.findOne({
+            where: {
+                id: idDoc
+            }
+        })
+        const filePath = path.join(__dirname, '..', 'uploads', dokumen.filename);
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Gagal menghapus file:', err);
+            }
+        });
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).json({
+                message: 'Tidak ada file yang diunggah'
+            });
+        }
+        const {
+            name,
+            namaFile,
+            description,
+
+        } = req.body;
+        const file = req.files.file;
+        const fileExtension = file.name.split('.').pop();
+        const fileName = `${namaFile}.${fileExtension}`;
+
+        file.mv(`uploads/${fileName}`, async (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: 'Terjadi kesalahan saat mengunggah file'
+                });
+            }
+            const countDocs = await documents.count();
+            let docId = `doc${countDocs + 1}`;
+            const dokumenID = await models.documents.findOne({
+                where: {
+                    id: docId
+                }
+            })
+
+            if (dokumenID) {
+                docId = `doc${countDocs + 1}${name}`;
+
+            }
+
+
+            await models.documents.update({
+                id: docId,
+                name: name,
+                filename: fileName,
+                description: description
+            },{where:{
+                id:idDoc,
+                id_user: userId,
+            }}
+            );
+
+
+
+            res.redirect('resources')
+        });
+
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -179,22 +277,22 @@ controller.deleteDokumen = async (req, res) => {
 
         const dokumen = await documents.findOne({
             where: {
-              id
+                id
             }
-          });
-          if (!dokumen) {
+        });
+        if (!dokumen) {
             return res.status(404).json({
-              pesan: 'Dokumen tidak ditemukan.'
+                pesan: 'Dokumen tidak ditemukan.'
             });
-          }
+        }
 
-          const filePath = path.join(__dirname, '..', 'uploads', dokumen.filename);
+        const filePath = path.join(__dirname, '..', 'uploads', dokumen.filename);
 
-          fs.unlink(filePath, (err) => {
+        fs.unlink(filePath, (err) => {
             if (err) {
-              console.error('Gagal menghapus file:', err);
+                console.error('Gagal menghapus file:', err);
             }
-          });
+        });
         // Proses penghapusan dokumen berdasarkan ID yang diterima
         await documents.destroy({
             where: {
@@ -213,11 +311,13 @@ controller.deleteDokumen = async (req, res) => {
     }
 }
 
-controller.detailDokumen = async (req,res)=>{
-    const { filename } = req.params;
+controller.detailDokumen = async (req, res) => {
+    const {
+        filename
+    } = req.params;
     const filePath = path.join(__dirname, '../uploads', filename);
 
-  res.sendFile(filePath);
+    res.sendFile(filePath);
 }
 
 // mencari dokumen
