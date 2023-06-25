@@ -4,7 +4,7 @@
   "description": "Tugas Besar PWEB",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www",
+   
     "startdev": "nodemon ./bin/www"
   },
   "repository": {
