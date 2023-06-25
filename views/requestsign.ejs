@@ -27,18 +27,19 @@
     }
 
     body {
-		background-color: #DAE2EC;
-		display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-	}
-	footer {
-			text-align: center;
-			padding: 16px;
-			background-color: #8EAFD5;
-			color: #fff;
-			margin-top: auto;
-		}
+      background-color: #DAE2EC;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      background-color: #8EAFD5;
+      color: #fff;
+      margin-top: auto;
+    }
   </style>
   </style>
 </head>
@@ -120,9 +121,8 @@
 
   </div>
   <script>
-  
     const decisionForm = document.getElementById('decisionForm-<%= signature.document_id %>');
-    decisionForm.addEventListener('submit', function(event) {
+    decisionForm.addEventListener('submit', function (event) {
       event.preventDefault();
 
       const decision = decisionForm.elements.decision.value;
@@ -142,35 +142,36 @@
       }
     });
 
-  function makeDecision(decision, user_id, document_id) {
-    const url = "http://localhost:3000/makeDecision";
-    const body = {
-      decision,
-      user_id,
-      document_id
-    };
+    function makeDecision(decision, user_id, document_id) {
+      const url = "http://localhost:3000/makeDecision";
+      const body = {
+        decision,
+        user_id,
+        document_id
+      };
 
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    })
-      .then(response => {
-        if (response.ok) {
-          // Tindakan berhasil, lakukan sesuatu (misalnya, tampilkan pesan sukses)
-          console.log("Decision processed successfully");
-        } else {
-          // Tindakan gagal, lakukan sesuatu (misalnya, tampilkan pesan kesalahan)
-          console.error("Failed to process decision");
-        }
-      })
-      .catch(error => {
-        console.error("Error:", error);
-      });
-  }
-</script>
+      fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            alert(result.msg);
+            window.location.href = 'requestsign';
+          } else {
+            alert(result.msg);
+            window.location.href = 'requestsign';
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+  </script>
   <footer>
     <p>&copy; Siletra 2023. All rights reserved.</p>
   </footer>

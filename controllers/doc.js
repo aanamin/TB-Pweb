@@ -106,7 +106,7 @@ controller.buatDokumen = async (req, res) => {
         } = req.body;
         const file = req.files.file;
         const fileExtension = file.name.split('.').pop();
-        const fileName = `${namaFile}.${fileExtension}`;
+        const fileName = `${namaFile}${userId}.${fileExtension}`;
 
         file.mv(`uploads/${fileName}`, async (err) => {
             if (err) {
@@ -225,7 +225,7 @@ controller.editDokumen = async (req, res) => {
         } = req.body;
         const file = req.files.file;
         const fileExtension = file.name.split('.').pop();
-        const fileName = `${namaFile}.${fileExtension}`;
+        const fileName = `${namaFile}${userId}.${fileExtension}`;
 
         file.mv(`uploads/${fileName}`, async (err) => {
             if (err) {

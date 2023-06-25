@@ -320,15 +320,16 @@ controllers.decisionRequest = async (req, res) => {
       const pdfBytes = fs.readFileSync(pdfPath);
       const imageBytes = fs.readFileSync(imagePath);
 
-      const pdfDoc = await PDFDocument.load(pdfBytes);
+      const pdfDoc = await PDFDocument.load(pdfBytes,{ ignoreEncryption: true });
       const image = await pdfDoc.embedPng(imageBytes);
       const scaleFactor = 0.5;
       const newWidth = image.width * scaleFactor;
       const newHeight = image.height * scaleFactor;
 
-      const imagePage = pdfDoc.addPage();
+      const lastPage = pdfDoc.getPage(pdfDoc.getPageCount() - 1);
+      // const { width, height } = lastPage.getSize();
 
-      imagePage.drawImage(image, {
+      lastPage.drawImage(image, {
         x: 0,
         y: 0,
         width: newWidth,
@@ -370,9 +371,6 @@ controllers.decisionRequest = async (req, res) => {
 
     res.status(200).json({
       msg: 'Data Berhasil Ditambahkan',
-      decision: decision,
-      user_id: user_id,
-      document_id: document_id,
       success: true
     });
   } catch (error) {
