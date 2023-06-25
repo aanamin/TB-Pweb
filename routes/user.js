@@ -27,6 +27,8 @@ server.get('/profile', verifyToken, controller.user.profil)
 server.get('/mainpage', verifyToken, controller.user.mainpage)
 server.get('/upSignature', verifyToken ,controller.user.tampilUpsignature)
 server.post('/upSignature', verifyToken,  controller.user.upsignature)
+server.get('/changepw', verifyToken,  controller.user.tampilChangepw)
+server.post('/changepw', verifyToken,  controller.user.changepw)
 server.get('/logout',verifyToken,   controller.user.logout) 
 
 server.get('/myrequest', verifyToken, controller.signature.myrequest)

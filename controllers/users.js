@@ -4,13 +4,18 @@ const user = require('../models/user')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 const fs = require('fs')
-const { v4: uuidv4 } = require('uuid');
+const {
+    v4: uuidv4
+} = require('uuid');
 
 dotenv.config();
 process.env.SECRET_TOKEN;
 
 const controllers = {}
 
+controllers.tampilChangepw = async (req, res) => {
+    res.render('changepw')
+}
 controllers.tampilLogin = async (req, res) => {
     res.render('login')
 }
@@ -19,7 +24,7 @@ controllers.tampilRegister = async (req, res) => {
 }
 
 controllers.mainpage = async (req, res) => {
-    
+
     res.render('mainpage')
 }
 
@@ -29,7 +34,7 @@ controllers.landing = async (req, res) => {
 
 controllers.logout = async (req, res) => {
     try {
-        
+
         req.session.destroy((err) => {
             if (err) {
                 console.log(err);
@@ -38,90 +43,145 @@ controllers.logout = async (req, res) => {
                     msg: 'Cant logout',
                 });
             }
-        
+
             res.clearCookie('accessToken');
-            
+
             res.render('login')
-          });
-      } catch (error) {
-        console.log(error)
-      }
-    
-}
-
-controllers.tampilUpsignature = async (req,res) => {
-    
-    try {
-        
-        const userId = req.user.id
-        const userProfile = await user.findOne({where: {
-            id: userId
-        }})
-        if (!userProfile) {
-          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
-        }
-    
-        res.render('upsignature', {
-            user: userProfile
         });
-      } catch (error) {
+    } catch (error) {
         console.log(error)
-      }
-    
+    }
+
 }
 
-controllers.upsignature = async (req,res) => {
+controllers.tampilUpsignature = async (req, res) => {
+
     try {
+
         const userId = req.user.id
-        if (!req.files || Object.keys(req.files).length === 0) {
-          return res.status(400).json({ message: 'Tidak ada file yang diunggah' });
-        }
-        const file = req.files.file;
-        const fileExtension = file.name.split('.').pop();
-        const fileName = `${userId}.${fileExtension}`;
-    
-        // Simpan file ke direktori yang diinginkan
-        file.mv(`uploads/${fileName}`, async (err) => {
-          if (err) {
-            console.log(err)
-            return res.status(500).json({ message: 'Terjadi kesalahan saat mengunggah file' });
-          }
-    
-          // Simpan informasi file ke database
-          const uploadedFile = await user.update({
-            sign_img: fileName
-          }, {
+        const userProfile = await user.findOne({
             where: {
                 id: userId
             }
-          });
-    
-          return res.status(200).json({ message: 'File berhasil diunggah', file: uploadedFile, success: true });
+        })
+        if (!userProfile) {
+            return res.status(404).json({
+                message: 'Profil pengguna tidak ditemukan.'
+            });
+        }
+        res.render('upsignature', {
+            user: userProfile
         });
-      } catch (error) {
+    } catch (error) {
         console.log(error)
-        return res.status(500).json({ message: 'Terjadi kesalahan saat mengunggah file' });
-      }
-    };
+    }
+
+}
+
+controllers.upsignature = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await models.user.findOne({
+            where: {
+                id: userId
+            }
+        });
+
+
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).json({
+                message: 'Tidak ada file yang diunggah'
+            });
+        }
+
+        const file = req.files.file;
+        const fileExtension = file.name.split('.').pop();
+        const fileName = `${userId}.${fileExtension}`;
+
+        // Simpan file ke direktori yang diinginkan
+        file.mv(`uploads/${fileName}`, async (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({
+                    message: 'Terjadi kesalahan saat mengunggah file'
+                });
+            }
+
+            // Simpan informasi file ke database
+            const uploadedFile = await models.user.update({
+                sign_img: fileName
+            }, {
+                where: {
+                    id: userId
+                }
+            });
+
+            return res.status(200).json({
+                message: 'File berhasil diunggah',
+                file: uploadedFile,
+                success: true
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Terjadi kesalahan saat mengunggah file'
+        });
+    }
+};
+
+controllers.changepw = async (req, res) => {
+    try {
+        const {password, newpassword }= req.body
+        const userId = req.user.id
+        const user = await models.user.findOne({
+            where:{
+                id: userId
+            }
+        })
+        if(password != user.password){
+            return res.status(403).json({
+                message: 'masukkan password yang benar'
+            })
+        } 
+        await models.user.update({
+            password: newpassword,
+        },{
+            where:{
+                id:userId
+            }
+        })
+        return res.status(201).json({
+            msg:"Password anda telah diperbarui",
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
 
 controllers.profil = async (req, res) => {
     // res.render('profile')
     try {
-        
+
         const userId = req.user.id
-        const userProfile = await user.findOne({where: {
-            id: userId
-        }})
+        const userProfile = await user.findOne({
+            where: {
+                id: userId
+            }
+        })
         if (!userProfile) {
-          return res.status(404).json({ message: 'Profil pengguna tidak ditemukan.' });
+            return res.status(404).json({
+                message: 'Profil pengguna tidak ditemukan.'
+            });
         }
-    
+
         res.render('profile', {
-            user: userProfile                           
+            user: userProfile
         });
-      } catch (error) {
+    } catch (error) {
         console.log(error)
-      }
+    }
 }
 
 
@@ -140,9 +200,7 @@ controllers.register = async (req, res) => {
         } = req.body;
         // const salt = await bcrypt.genSalt();
         // const hashPassword = await bcrypt.hash(password, 10);
-        let active = req.body.active;
-        let sign_img = req.body.sign_img;
-        let id = req.body.id;
+
 
         const existingUser = await user.findOne({
             where: {
@@ -191,14 +249,14 @@ controllers.login = async (req, res) => {
         });
 
         if (!pengguna) {
-            
+
             return res.status(400).json({
                 message: 'Invalid'
             });
         }
 
         if (password != pengguna.password) {
-           
+
             return res.status(400).json({
                 message: 'Password Anda Salah'
             });
@@ -220,7 +278,7 @@ controllers.login = async (req, res) => {
 
         res.cookie("accessToken", token, {
             httpOnly: true,
-            maxAge: 100*60 * 1000,
+            maxAge: 100 * 60 * 1000,
         })
         res.status(200).json({
             token: token,

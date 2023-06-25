@@ -12,8 +12,18 @@
 </head>
 <style>
 	body {
-		background: #63c6d3;
+		background-color: #DAE2EC;
+		display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 	}
+	footer {
+			text-align: center;
+			padding: 16px;
+			background-color: #8EAFD5;
+			color: #fff;
+			margin-top: auto;
+		}
 </style>
 
 <body>
@@ -51,7 +61,7 @@
 	<main>
 		<h2 align="center">My Resources</h2>
 		<div class="container">
-			<div class="card" style="width: rem; background: #8DAFD5;">
+			<div class="card" style="width: rem; ">
 				<table class="table table-bordered border-black">
 					<thead>
 						<tr>
@@ -93,11 +103,11 @@
 					</tbody>
 				</table>
 			</div>
+			<button type="button" onclick="window.location.href='upresources'" class="btn btn-primary">Upload</button>
 		</div>
 	</main>
-	<button type="button" onclick="window.location.href='upresources'" class="btn btn-primary">Upload</button>
 
-	</button>
+	<!-- </button> -->
 
 	<script>
 		const deleteForms = document.querySelectorAll('form[id^="deleteForm-"]');

@@ -45,9 +45,8 @@
 			const confirmPassword = document.getElementById('confirmPassword').value;
 			try {
 				if (password !== confirmPassword) {
-					return res.status(400).json({
-						message: 'Konfirmasi password tidak sesuai.'
-					});
+					alert('Konfirmasi password tidak sesuai.'
+					);
 				}
 				const response = await fetch("http://localhost:3000/signup", {
 					method: "POST",
