@@ -103,7 +103,7 @@
 		  formData.append('description', descriptionInput.value);
 	  
 		  try {
-			const response = await fetch('http://localhost:3000/editSources', {
+			const response = await fetch('http://siletra.northeurope.cloudapp.azure.com:3000/editSources', {
 			  method: 'POST',
 			  body: formData,
 			});

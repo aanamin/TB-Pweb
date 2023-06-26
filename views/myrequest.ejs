@@ -130,7 +130,7 @@
 		async function edit(event) {
 			event.preventDefault();
 			try {
-				const response = await fetch("http://localhost:3000/editMyrequest", {
+				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editMyrequest", {
 					method: 'PUT', // Ubah metode permintaan menjadi PUT
 					body: new FormData(editForm) // Menggunakan editForm sebagai argumen FormData
 				});
