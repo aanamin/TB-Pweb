@@ -122,7 +122,7 @@ controller.buatDokumen = async (req, res) => {
                     id: docId
                 }
             })
-            let i=1
+            let i=2
             for(; idDoc; i++){
                 let docId = `doc${countDocs + i}`;
                 await documents.create({
