@@ -138,17 +138,16 @@ async function edit(event) {
     });
 
     if (response.ok) {
-      alert('Dokumen berhasil diedit');
-      window.location.href = '/editRequestsend';
+      window.location.href = 'editRequestsend';
     } else {
       const result = await response.json();
       alert(result.message);
-      window.location.href = '/myrequest';
+      window.location.href = 'myrequest';
     }
   } catch (error) {
     console.log(error);
     alert('Terjadi kesalahan');
-    window.location.href = '/myrequest';
+    window.location.href = 'myrequest';
   }
 }
 
