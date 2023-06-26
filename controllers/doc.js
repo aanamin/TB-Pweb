@@ -122,6 +122,7 @@ controller.buatDokumen = async (req, res) => {
                     id: docId
                 }
             })
+            console.log(idDoc)
             let i = 2;
             while (idDoc) {
                 let docId = `doc${countDocs + i}`;
