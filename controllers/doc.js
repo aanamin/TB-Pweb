@@ -296,7 +296,7 @@ controller.deleteDokumen = async (req, res) => {
         // Proses penghapusan dokumen berdasarkan ID yang diterima
         await documents.destroy({
             where: {
-                description:'pbd tubes'
+                id
             }
         });
         // Ganti dengan logika penghapusan dokumen Anda
