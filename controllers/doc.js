@@ -124,7 +124,7 @@ controller.buatDokumen = async (req, res) => {
             })
 
             if (idDoc) {
-                docId = `doc${countDocs + 1}${name}`;
+                docId = `doc${countDocs + 2}${userId}`;
 
             }
 
