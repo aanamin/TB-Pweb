@@ -129,10 +129,13 @@
 
 		async function edit(event) {
 			event.preventDefault();
+			const documentIdInput = document.querySelector('input[name="document_id"]');
+  const nameInput = document.querySelector('input[name="name"]');
+  const descriptionInput = document.querySelector('textarea[name="description"]');
 			try {
 				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editMyrequest", {
 					method: 'PUT', // Ubah metode permintaan menjadi PUT
-					body: new FormData(editForm) // Menggunakan editForm sebagai argumen FormData
+					body: JSON.stringify({FormData})  // Menggunakan editForm sebagai argumen FormData
 				});
 
 				const result = await response.json();
