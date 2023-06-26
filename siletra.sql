@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `documents` (
-  `id` varchar(7) NOT NULL,
+  `id` varchar(15) NOT NULL,
   `id_user` varchar(7) NOT NULL,
   `name` varchar(50) NOT NULL,
   `filename` varchar(50) NOT NULL,
@@ -60,7 +60,7 @@ INSERT INTO `documents` (`id`, `id_user`, `name`, `filename`, `description`, `cr
 
 CREATE TABLE `signature` (
   `user_id` varchar(7) NOT NULL,
-  `document_id` varchar(7) NOT NULL,
+  `document_id` varchar(15) NOT NULL,
   `id_tujuan` varchar(7) NOT NULL,
   `jabatan` varchar(50) NOT NULL,
   `status` varchar(30) DEFAULT NULL,
