@@ -1,4 +1,4 @@
-'use strict'
+
 const {sequelize, DataTypes, err} = require('sequelize')
 const db = require('../config/dbConfig.js')
 const signature = require('./signature.js')
