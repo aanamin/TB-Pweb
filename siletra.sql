@@ -7,7 +7,7 @@
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
