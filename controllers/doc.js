@@ -191,18 +191,21 @@ controller.tampilEditDokumen = async (req, res) => {
                 document_id: document_id
             }
         })
-        const status = signature.status;
-        if (status === 'accept') {
-            return res.status(404).json({
-                success: false,
-                message: 'maaf, dokumen ini sudah ditanda tangani'
-            })
-        }
-        if (status === 'reject') {
-            return res.status(404).json({
-                success: false,
-                message: 'maaf, dokumen ini sudah ditanda tangani'
-            })
+        if(signature){
+            const status = signature.status;
+            if (status === 'accept') {
+                return res.status(404).json({
+                    success: false,
+                    message: 'maaf, dokumen ini sudah ditanda tangani'
+                })
+            }
+            if (status === 'reject') {
+                return res.status(404).json({
+                    success: false,
+                    message: 'maaf, dokumen ini sudah ditanda tangani'
+                })
+            }
+
         }
 
         res.render('editUpresources', {

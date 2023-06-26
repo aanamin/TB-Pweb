@@ -205,8 +205,6 @@ controllers.register = async (req, res) => {
             email,
             password
         } = req.body;
-        // const salt = await bcrypt.genSalt();
-        // const hashPassword = await bcrypt.hash(password, 10);
 
 
         const existingUser = await user.findOne({
