@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2023 at 06:02 AM
+-- Generation Time: Jun 26, 2023 at 10:02 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -97,8 +97,8 @@ CREATE TABLE `user` (
   `password` varchar(50) NOT NULL,
   `active` int(7) NOT NULL DEFAULT 0,
   `sign_img` varchar(50) DEFAULT NULL,
-  `created_at` date NOT NULL,
-  `updated_at` date NOT NULL
+  `created_at` date NOT NULL DEFAULT current_timestamp(),
+  `updated_at` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
