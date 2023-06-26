@@ -127,39 +127,31 @@
 		});
 
 		const editForm = document.getElementById('editRequestForm');
-		editForm.addEventListener('submit', edit);
+editForm.addEventListener('submit', edit);
 
-		async function edit(event) {
-			event.preventDefault();
+async function edit(event) {
+  event.preventDefault();
+  try {
+    const response = await fetch("/editMyrequest", {
+      method: 'POST',
+      body: new FormData(editForm)
+    });
 
-			try {
-				const userIdInput = document.querySelector('input[name="user_id"]');
-				const documentIdInput = document.querySelector('input[name="document_id"]');
+    if (response.ok) {
+      alert('Dokumen berhasil diedit');
+      window.location.href = '/editRequestsend';
+    } else {
+      const result = await response.json();
+      alert(result.message);
+      window.location.href = '/myrequest';
+    }
+  } catch (error) {
+    console.log(error);
+    alert('Terjadi kesalahan');
+    window.location.href = '/myrequest';
+  }
+}
 
-				const formData = new FormData();
-				formData.append('user_id', userIdInput.value);
-				formData.append('document_id', documentIdInput.value);
-
-				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editMyrequest", {
-					method: 'POST',
-					body: formData
-				});
-
-				const result = await response.json();
-
-				if (response.ok) {
-					alert(result.message);
-					window.location.href = '/editRequestsend';
-				} else {
-					alert(result.message);
-					window.location.href = '/myrequest';
-				}
-			} catch (error) {
-				console.log(error);
-				alert(error);
-				window.location.href = '/myrequest';
-			}
-		}
 	</script>
 	<footer>
 		<p>&copy; Siletra 2023. All rights reserved.</p>

@@ -208,7 +208,7 @@ controllers.tampileditMyrequest = async (req, res) => {
       include: [{
         model: models.user,
         as: 'Receiver',
-        attributes: ['email'],
+        attribute: ['email'],
       }],
       where: {
         document_id: documentId,
@@ -250,8 +250,13 @@ controllers.tampileditMyrequest = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      success: false,
+      message: 'Terjadi kesalahan server'
+    });
   }
 };
+
 
 
 //edit myrequest
