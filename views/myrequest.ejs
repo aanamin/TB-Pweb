@@ -132,7 +132,7 @@ editForm.addEventListener('submit', edit);
 async function edit(event) {
   event.preventDefault();
   try {
-    const response = await fetch("/editMyrequest", {
+    const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editMyrequest", {
       method: 'POST',
       body: new FormData(editForm)
     });
