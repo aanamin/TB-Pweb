@@ -131,21 +131,18 @@
 
 		async function edit(event) {
 			event.preventDefault();
-			const documentIdInput = document.querySelector('input[name="document_id"]');
-			const nameInput = document.querySelector('input[name="name"]');
-
-			const requestBody = {
-				document_id: documentIdInput.value,
-				name: nameInput.value,
-			};
 
 			try {
-				const response = await fetch("/editMyrequest", {
+				const userIdInput = document.querySelector('input[name="user_id"]');
+				const documentIdInput = document.querySelector('input[name="document_id"]');
+
+				const formData = new FormData();
+				formData.append('user_id', userIdInput.value);
+				formData.append('document_id', documentIdInput.value);
+
+				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editMyrequest", {
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(requestBody)
+					body: formData
 				});
 
 				const result = await response.json();

@@ -208,13 +208,20 @@ controllers.tampileditMyrequest = async (req, res) => {
       include: [{
         model: models.user,
         as: 'Receiver',
-        attribute: ['email'],
+        attributes: ['email'],
       }],
       where: {
         document_id: documentId,
         user_id: userId
       }
     });
+
+    if (!signature) {
+      return res.status(404).json({
+        success: false,
+        message: 'Tidak ada tanda tangan dengan ID tersebut'
+      });
+    }
 
     const status = signature.status;
     if (status === 'accept' || status === 'reject') {
@@ -223,23 +230,20 @@ controllers.tampileditMyrequest = async (req, res) => {
         message: 'Maaf, dokumen ini sudah ditandatangani'
       });
     }
-    if (!signature) {
-      return res.status(404).json({
-        success: false,
-        message: 'Tidak ada tanda tangan dengan ID tersebut'
-      });
-    }
+
     const doc = await models.documents.findAll({
       where: {
         id_user: userId
       }
     });
+
     if (!doc) {
       return res.status(404).json({
         success: false,
         message: 'Tidak ada dokumen dengan ID tersebut'
       });
     }
+
     res.render('editRequestsend', {
       signature: signature,
       dokumen: doc
