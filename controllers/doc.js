@@ -122,16 +122,15 @@ controller.buatDokumen = async (req, res) => {
                     id: docId
                 }
             })
-            let i=2
-            for(; idDoc; i++){
-                i++
+            let i = 2;
+            while (idDoc) {
                 let docId = `doc${countDocs + i}`;
                 const dokumen = await models.documents.findOne({
-                    where:{
+                    where: {
                         id: docId
                     }
-                })
-                 if(!dokumen){
+                });
+                if (!dokumen) {
                     await documents.create({
                         id: docId,
                         id_user: userId,
@@ -140,7 +139,8 @@ controller.buatDokumen = async (req, res) => {
                         description: description
                     });
                     break;
-                 }
+                }
+                i++;
             }
 
 
