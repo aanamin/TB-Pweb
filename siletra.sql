@@ -3,11 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2023 at 10:13 AM
+-- Generation Time: Jun 26, 2023 at 10:21 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
-SET SQL_MODE = "";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -33,8 +33,8 @@ CREATE TABLE `documents` (
   `name` varchar(50) NOT NULL,
   `filename` varchar(50) NOT NULL,
   `description` varchar(50) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -42,15 +42,15 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`id`, `id_user`, `name`, `filename`, `description`, `created_at`, `updated_at`) VALUES
-('doc1', 'user1', 'kartu uas amin', 'kartu_uas.pdf', 'harap ditandatangani', '2023-06-18', '2023-06-18'),
-('doc3', 'user2', 'Pos', 'tugas.pdf', 'artikel', '2023-06-18', '2023-06-18'),
-('doc4', 'user1', 'Laporan', 'Laporan_Keuangan.pdf', 'laporan keuangan kegiatan fti mengajar', '2023-06-20', '2023-06-20'),
-('doc4ser', 'user1', 'sertifikat_lea', 'sertifikat.pdf', 'sertifikat workshop lea x hmsi', '2023-06-24', '2023-06-24'),
-('doc6', 'user3', 'artikel damin', 'artikel_data_mining.pdf', 'artikel data mining', '2023-06-25', '2023-06-25'),
-('doc6soa', 'user1', 'soal damin', 'soal_Datamining.pdf', 'soal uas data mining', '2023-06-25', '2023-06-25'),
-('doc7', 'user1', 'file contoh', 'file_contoh.pdf', 'file contoh untuk halo', '2023-06-25', '2023-06-25'),
-('doc8', 'user1', 'file', 'file.pdf', 'file', '2023-06-25', '2023-06-25'),
-('doc9', 'user2', 'tugas', 'tugasuser2.pdf', 'tugas', '2023-06-25', '2023-06-25');
+('doc1', 'user1', 'kartu uas amin', 'kartu_uas.pdf', 'harap ditandatangani', '2023-06-17 17:00:00', '2023-06-17 17:00:00'),
+('doc3', 'user2', 'Pos', 'tugas.pdf', 'artikel', '2023-06-17 17:00:00', '2023-06-17 17:00:00'),
+('doc4', 'user1', 'Laporan', 'Laporan_Keuangan.pdf', 'laporan keuangan kegiatan fti mengajar', '2023-06-19 17:00:00', '2023-06-19 17:00:00'),
+('doc4ser', 'user1', 'sertifikat_lea', 'sertifikat.pdf', 'sertifikat workshop lea x hmsi', '2023-06-23 17:00:00', '2023-06-23 17:00:00'),
+('doc6', 'user3', 'artikel damin', 'artikel_data_mining.pdf', 'artikel data mining', '2023-06-24 17:00:00', '2023-06-24 17:00:00'),
+('doc6soa', 'user1', 'soal damin', 'soal_Datamining.pdf', 'soal uas data mining', '2023-06-24 17:00:00', '2023-06-24 17:00:00'),
+('doc7', 'user1', 'file contoh', 'file_contoh.pdf', 'file contoh untuk halo', '2023-06-24 17:00:00', '2023-06-24 17:00:00'),
+('doc8', 'user1', 'file', 'file.pdf', 'file', '2023-06-24 17:00:00', '2023-06-24 17:00:00'),
+('doc9', 'user2', 'tugas', 'tugasuser2.pdf', 'tugas', '2023-06-24 17:00:00', '2023-06-24 17:00:00');
 
 -- --------------------------------------------------------
 
@@ -64,9 +64,9 @@ CREATE TABLE `signature` (
   `id_tujuan` varchar(7) NOT NULL,
   `jabatan` varchar(50) NOT NULL,
   `status` varchar(30) DEFAULT NULL,
-  `signed_at` date DEFAULT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date NOT NULL DEFAULT current_timestamp()
+  `signed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -74,15 +74,15 @@ CREATE TABLE `signature` (
 --
 
 INSERT INTO `signature` (`user_id`, `document_id`, `id_tujuan`, `jabatan`, `status`, `signed_at`, `created_at`, `updated_at`) VALUES
-('user1', 'doc1', 'user2', 'Dosen Pa', 'accept', NULL, '2023-06-20', '2023-06-23'),
-('user1', 'doc4', 'user2', 'Bendahara', 'accept', NULL, '2023-06-20', '2023-06-22'),
-('user1', 'doc4ser', 'user2', 'Dosen lea', 'accept', '2023-06-25', '2023-06-25', '2023-06-25'),
-('user1', 'doc6soa', 'user2', 'komp', 'accept', '2023-06-25', '2023-06-25', '2023-06-25'),
-('user1', 'doc7', 'user3', 'dosen pengawas', 'accept', '2023-06-26', '2023-06-26', '2023-06-26'),
-('user1', 'doc8', 'user2', 'kadin', 'accept', '2023-06-26', '2023-06-26', '2023-06-26'),
-('user2', 'doc3', 'user1', 'sekretaris', 'accept', NULL, '2023-06-19', '2023-06-22'),
-('user2', 'doc9', 'user1', 'dosen pengampu', 'accept', '2023-06-26', '2023-06-26', '2023-06-26'),
-('user3', 'doc6', 'user1', 'dosen pengampu', 'accept', '2023-06-26', '2023-06-26', '2023-06-26');
+('user1', 'doc1', 'user2', 'Dosen Pa', 'accept', NULL, '2023-06-19 17:00:00', '2023-06-22 17:00:00'),
+('user1', 'doc4', 'user2', 'Bendahara', 'accept', NULL, '2023-06-19 17:00:00', '2023-06-21 17:00:00'),
+('user1', 'doc4ser', 'user2', 'Dosen lea', 'accept', '2023-06-24 17:00:00', '2023-06-24 17:00:00', '2023-06-24 17:00:00'),
+('user1', 'doc6soa', 'user2', 'komp', 'accept', '2023-06-24 17:00:00', '2023-06-24 17:00:00', '2023-06-24 17:00:00'),
+('user1', 'doc7', 'user3', 'dosen pengawas', 'accept', '2023-06-25 17:00:00', '2023-06-25 17:00:00', '2023-06-25 17:00:00'),
+('user1', 'doc8', 'user2', 'kadin', 'accept', '2023-06-25 17:00:00', '2023-06-25 17:00:00', '2023-06-25 17:00:00'),
+('user2', 'doc3', 'user1', 'sekretaris', 'accept', NULL, '2023-06-18 17:00:00', '2023-06-21 17:00:00'),
+('user2', 'doc9', 'user1', 'dosen pengampu', 'accept', '2023-06-25 17:00:00', '2023-06-25 17:00:00', '2023-06-25 17:00:00'),
+('user3', 'doc6', 'user1', 'dosen pengampu', 'accept', '2023-06-25 17:00:00', '2023-06-25 17:00:00', '2023-06-25 17:00:00');
 
 -- --------------------------------------------------------
 
@@ -97,8 +97,8 @@ CREATE TABLE `user` (
   `password` varchar(50) NOT NULL,
   `active` int(7) NOT NULL DEFAULT 0,
   `sign_img` varchar(50) DEFAULT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -106,9 +106,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password`, `active`, `sign_img`, `created_at`, `updated_at`) VALUES
-('user1', 'admin', 'admin@gmail.com', 'admin123', 1, 'user1.png', '2023-06-18', '2023-06-26'),
-('user2', 'user', 'user@gmail.com', 'user', 0, 'user2.png', '2023-06-18', '2023-06-22'),
-('user3', '123halo', '123@gmail.com', 'admin', 0, 'user3.png', '2023-06-25', '2023-06-25');
+('user1', 'admin', 'admin@gmail.com', 'admin123', 1, 'user1.png', '2023-06-17 17:00:00', '2023-06-25 17:00:00'),
+('user2', 'user', 'user@gmail.com', 'user', 0, 'user2.png', '2023-06-17 17:00:00', '2023-06-21 17:00:00'),
+('user3', '123halo', '123@gmail.com', 'admin', 0, 'user3.png', '2023-06-24 17:00:00', '2023-06-24 17:00:00');
 
 --
 -- Indexes for dumped tables
