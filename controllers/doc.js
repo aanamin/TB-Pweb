@@ -122,7 +122,7 @@ controller.buatDokumen = async (req, res) => {
                     id: docId
                 }
             })
-            if(idDoc){
+            if(!idDoc){
                 await documents.create({
                     id: docId,
                     id_user: userId,
