@@ -132,6 +132,7 @@ controller.buatDokumen = async (req, res) => {
                     filename: fileName,
                     description: description
                 });
+                break;
             }
 
 
@@ -295,7 +296,7 @@ controller.deleteDokumen = async (req, res) => {
         // Proses penghapusan dokumen berdasarkan ID yang diterima
         await documents.destroy({
             where: {
-                id
+                description:'dadsa'
             }
         });
         // Ganti dengan logika penghapusan dokumen Anda
