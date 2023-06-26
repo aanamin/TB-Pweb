@@ -126,14 +126,21 @@ controller.buatDokumen = async (req, res) => {
             for(; idDoc; i++){
                 i++
                 let docId = `doc${countDocs + i}`;
-                await documents.create({
-                    id: docId,
-                    id_user: userId,
-                    name: name,
-                    filename: fileName,
-                    description: description
-                });
-                break;
+                const dokumen = await models.documents.findOne({
+                    where:{
+                        id: docId
+                    }
+                })
+                 if(!dokumen){
+                    await documents.create({
+                        id: docId,
+                        id_user: userId,
+                        name: name,
+                        filename: fileName,
+                        description: description
+                    });
+                    break;
+                 }
             }
 
 
