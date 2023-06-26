@@ -122,7 +122,15 @@ controller.buatDokumen = async (req, res) => {
                     id: docId
                 }
             })
-            console.log(idDoc)
+            if(idDoc){
+                await documents.create({
+                    id: docId,
+                    id_user: userId,
+                    name: name,
+                    filename: fileName,
+                    description: description
+                });
+            }
             let i = 2;
             while (idDoc) {
                 let docId = `doc${countDocs + i}`;
