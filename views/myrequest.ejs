@@ -15,16 +15,17 @@
 	body {
 		background-color: #DAE2EC;
 		display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+		flex-direction: column;
+		min-height: 100vh;
 	}
+
 	footer {
-			text-align: center;
-			padding: 16px;
-			background-color: #8EAFD5;
-			color: #fff;
-			margin-top: auto;
-		}
+		text-align: center;
+		padding: 16px;
+		background-color: #8EAFD5;
+		color: #fff;
+		margin-top: auto;
+	}
 </style>
 
 <body>
@@ -113,7 +114,7 @@
 	</div>
 	<script>
 		const deleteForm = document.getElementById('deleteForm');
-		const editForm = document.getElementById('editRequestForm');
+
 
 		deleteForm.addEventListener('submit', function (event) {
 			event.preventDefault();
@@ -125,32 +126,33 @@
 			}
 		});
 
+		const editForm = document.getElementById('editRequestForm');
 		editForm.addEventListener('submit', edit);
 
 		async function edit(event) {
 			event.preventDefault();
 			const documentIdInput = document.querySelector('input[name="document_id"]');
-  const nameInput = document.querySelector('input[name="name"]');
-  const descriptionInput = document.querySelector('textarea[name="description"]');
+			const nameInput = document.querySelector('input[name="name"]');
+			const descriptionInput = document.querySelector('textarea[name="description"]');
 			try {
-				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editMyrequest", {
-					method: 'PUT', // Ubah metode permintaan menjadi PUT
-					body: JSON.stringify({FormData})  // Menggunakan editForm sebagai argumen FormData
+				const response = await fetch("/editMyrequest", {
+					method: 'POST', // Menggunakan metode POST
+					body: new FormData(editForm)
 				});
 
 				const result = await response.json();
 
 				if (response.ok) {
 					alert(result.message);
-					window.location.href = '/editRequestsend'; // Ubah URL yang dituju setelah berhasil mengedit
+					window.location.href = '/editRequestsend';
 				} else {
 					alert(result.message);
-					window.location.href = '/myrequest'; // Ubah URL yang dituju jika terjadi kesalahan
+					window.location.href = '/myrequest';
 				}
 			} catch (error) {
 				console.log(error);
 				alert(error);
-				window.location.href = '/myrequest'; // Ubah URL yang dituju jika terjadi kesalahan
+				window.location.href = '/myrequest';
 			}
 		}
 	</script>

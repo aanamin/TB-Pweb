@@ -1,5 +1,6 @@
 const {
-  or, where
+  or,
+  where
 } = require('sequelize');
 const signature = require('../models/signature');
 const user = require('../models/user')
@@ -199,88 +200,90 @@ controllers.deleteMyrequest = async (req, res) => {
   }
 }
 
-controllers.tampileditMyrequest = async (req,res) =>{
+controllers.tampileditMyrequest = async (req, res) => {
   try {
-    const userId = req.user.id
-    const document_id = req.body.document_id
+    const userId = req.user.id;
+    const documentId = req.body.document_id;
     const signature = await models.signature.findOne({
       include: [{
-        model: models.user ,
+        model: models.user,
         as: 'Receiver',
         attribute: ['email'],
-      },
-    ],
-    where: { 
-      document_id: document_id,
-      user_id: userId
-    }
-    })
+      }],
+      where: {
+        document_id: documentId,
+        user_id: userId
+      }
+    });
 
-    const status = signature.status
-    if(status ==='accept'){
+    const status = signature.status;
+    if (status === 'accept' || status === 'reject') {
       return res.status(404).json({
         success: false,
-        message: 'maaf, dokumen ini sudah ditanda tangani'
-      })
+        message: 'Maaf, dokumen ini sudah ditandatangani'
+      });
     }
-    if (status ==='reject') {
+    if (!signature) {
       return res.status(404).json({
         success: false,
-        message: 'maaf, dokumen ini sudah ditanda tangani'
-      })
-    }
-    if(!signature){
-      return res.status(404).json({
-        success: false,
-        message: 'Tidak ada tanda tangan dengan id tersebut'
-      })
+        message: 'Tidak ada tanda tangan dengan ID tersebut'
+      });
     }
     const doc = await models.documents.findAll({
       where: {
-        id_user : userId
+        id_user: userId
       }
-    })
-    if(!doc){
+    });
+    if (!doc) {
       return res.status(404).json({
         success: false,
-        message: 'Tidak ada dokumen dengan id tersebut'
-      })
+        message: 'Tidak ada dokumen dengan ID tersebut'
+      });
     }
     res.render('editRequestsend', {
       signature: signature,
-      dokumen : doc
-    })
+      dokumen: doc
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
+
 
 //edit myrequest
 controllers.ubahMyRequest = async (req, res) => {
   try {
-    const { user_id, document_id, email, jabatan, dokumen } = req.body;
+    const {
+      user_id,
+      document_id,
+      email,
+      jabatan,
+      dokumen
+    } = req.body;
     const user = await models.user.findOne({
       where: {
         email: email
       }
     })
 
-    if(!user){
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: 'email tersebut tidak terdaftar'
       })
     }
-    
+
     const newSignature = await models.signature.update({
-     
-      id_tujuan : user.id,
+
+      id_tujuan: user.id,
       jabatan: jabatan,
       document_id: dokumen
-    }, {where: {
-      user_id: user_id,
-      document_id: document_id
-    }})
+    }, {
+      where: {
+        user_id: user_id,
+        document_id: document_id
+      }
+    })
 
     res.status(200).json({
       msg: 'Data Berhasil Ditambahkan',
@@ -320,7 +323,9 @@ controllers.decisionRequest = async (req, res) => {
       const pdfBytes = fs.readFileSync(pdfPath);
       const imageBytes = fs.readFileSync(imagePath);
 
-      const pdfDoc = await PDFDocument.load(pdfBytes,{ ignoreEncryption: true });
+      const pdfDoc = await PDFDocument.load(pdfBytes, {
+        ignoreEncryption: true
+      });
       const image = await pdfDoc.embedPng(imageBytes);
       const scaleFactor = 0.5;
       const newWidth = image.width * scaleFactor;
@@ -338,11 +343,11 @@ controllers.decisionRequest = async (req, res) => {
       const uploadFolderPath = path.join(__dirname, '..', 'uploads');
       const filePath = path.join(__dirname, '..', 'uploads', doc.filename);
 
-          fs.unlink(filePath, (err) => {
-            if (err) {
-              console.error('Gagal menghapus file:', err);
-            }
-          });
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error('Gagal menghapus file:', err);
+        }
+      });
       const newFilePath = path.join(uploadFolderPath, `${doc.filename}`);
 
       const pdfBytesWithImage = await pdfDoc.save();
