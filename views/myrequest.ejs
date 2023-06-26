@@ -127,34 +127,45 @@
 		});
 
 		const editForm = document.getElementById('editRequestForm');
-		editForm.addEventListener('submit', edit);
+editForm.addEventListener('submit', edit);
 
-		async function edit(event) {
-			event.preventDefault();
-			const documentIdInput = document.querySelector('input[name="document_id"]');
-			const nameInput = document.querySelector('input[name="name"]');
-			const descriptionInput = document.querySelector('textarea[name="description"]');
-			try {
-				const response = await fetch("/editMyrequest", {
-					method: 'POST', // Menggunakan metode POST
-					body: new FormData(editForm)
-				});
+async function edit(event) {
+  event.preventDefault();
+  const documentIdInput = document.querySelector('input[name="document_id"]');
+  const nameInput = document.querySelector('input[name="name"]');
+  const descriptionInput = document.querySelector('textarea[name="description"]');
+  
+  const requestBody = {
+    document_id: documentIdInput.value,
+    name: nameInput.value,
+    description: descriptionInput.value
+  };
+  
+  try {
+    const response = await fetch("/editMyrequest", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
 
-				const result = await response.json();
+    const result = await response.json();
 
-				if (response.ok) {
-					alert(result.message);
-					window.location.href = '/editRequestsend';
-				} else {
-					alert(result.message);
-					window.location.href = '/myrequest';
-				}
-			} catch (error) {
-				console.log(error);
-				alert(error);
-				window.location.href = '/myrequest';
-			}
-		}
+    if (response.ok) {
+      alert(result.message);
+      window.location.href = '/editRequestsend';
+    } else {
+      alert(result.message);
+      window.location.href = '/myrequest';
+    }
+  } catch (error) {
+    console.log(error);
+    alert(error);
+    window.location.href = '/myrequest';
+  }
+}
+
 	</script>
 	<footer>
 		<p>&copy; Siletra 2023. All rights reserved.</p>
