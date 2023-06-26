@@ -1,3 +1,5 @@
+const dotenv = require('dotenv'); 
+dotenv.config();
 const express = require('express')
 const app = express()
 const port = 3000
@@ -15,7 +17,6 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-
 app.use(fileUpload());
 app.use('/upSignature', uploadRoute);
 app.use('/upresources', uploadRoute);

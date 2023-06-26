@@ -1,7 +1,7 @@
 //database
 const sequalize =  require('sequelize')
-const db = new sequalize('siletra', 'root', '', {
-    host    : "localhost",
+const db = new sequalize(`${process.env.DB_NAME}`, `${process.env.DB_USERNAME}`, `${process.env.DB_PASSWORD}`, {
+    host    : `${process.env.DB_HOST}`,
     dialect : "mysql"
 })
 

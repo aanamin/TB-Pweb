@@ -1,9 +1,9 @@
 // middleware untuk cek waktu Login
-const dotenv = require('dotenv');
+
 const express = require("express");
 const app = express();
 const jwt = require('jsonwebtoken');
-dotenv.config();
+
 const SECRET_TOKEN = process.env.SECRET_TOKEN;
 const verifyToken = (req, res, next) => {
     

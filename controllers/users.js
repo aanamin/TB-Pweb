@@ -34,7 +34,14 @@ controllers.landing = async (req, res) => {
 
 controllers.logout = async (req, res) => {
     try {
-
+        const userId = req.user.id
+        await models.user.update({
+            active: 0,
+        },{
+            where:{
+                id:userId
+            }
+        })
         req.session.destroy((err) => {
             if (err) {
                 console.log(err);
@@ -45,7 +52,7 @@ controllers.logout = async (req, res) => {
             }
 
             res.clearCookie('accessToken');
-
+            
             res.render('login')
         });
     } catch (error) {
@@ -267,7 +274,13 @@ controllers.login = async (req, res) => {
         if (!req.session.user) {
             req.session.user = {};
         }
-
+        await models.user.update({
+            active: 1,
+        },{
+            where:{
+                id:id
+            }
+        })
         req.session.user.id = id;
         const token = generateAccessToken({
             id,
@@ -275,7 +288,7 @@ controllers.login = async (req, res) => {
         }, process.env.SECRET_TOKEN);
         // const token = generateAccessToken({email: req.body.email})
 
-
+        
         res.cookie("accessToken", token, {
             httpOnly: true,
             maxAge: 100 * 60 * 1000,
