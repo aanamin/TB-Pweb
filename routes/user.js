@@ -38,5 +38,6 @@ server.post('/requestsend', verifyToken, controller.signature.requestsend)
 server.post('/deleteMyrequest', verifyToken, controller.signature.deleteMyrequest)
 server.post('/makeDecision', verifyToken, controller.signature.decisionRequest)
 server.post('/editMyrequest', verifyToken, controller.signature.tampileditMyrequest)
+server.get('/editMyrequest', verifyToken, controller.signature.tampileditMyrequest)
 server.post('/ubahMyrequest', verifyToken, controller.signature.ubahMyRequest)
 module.exports = server
