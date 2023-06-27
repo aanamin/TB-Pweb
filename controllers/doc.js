@@ -330,7 +330,7 @@ controller.deleteDokumen = async (req, res) => {
         console.log(err)
     }
 }
-
+// view dokumen
 controller.detailDokumen = async (req, res) => {
     const {
         filename
