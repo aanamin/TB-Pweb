@@ -195,13 +195,11 @@ controller.tampilEditDokumen = async (req, res) => {
             const status = signature.status;
             if (status === 'accept') {
                 return res.status(400).json({
-                    success: false,
                     message: 'maaf, dokumen ini sudah ditanda tangani'
                 })
             }
             if (status === 'reject') {
                 return res.status(400).json({
-                    success: false,
                     message: 'maaf, dokumen ini sudah ditanda tangani'
                 })
             }
