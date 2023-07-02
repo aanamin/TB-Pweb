@@ -14,16 +14,17 @@
 	body {
 		background-color: #DAE2EC;
 		display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+		flex-direction: column;
+		min-height: 100vh;
 	}
+
 	footer {
-			text-align: center;
-			padding: 16px;
-			background-color: #8EAFD5;
-			color: #fff;
-			margin-top: auto;
-		}
+		text-align: center;
+		padding: 16px;
+		background-color: #8EAFD5;
+		color: #fff;
+		margin-top: auto;
+	}
 </style>
 
 <body>
@@ -82,20 +83,21 @@
 							<td><%= documents.description %></td>
 							<td>
 								<div class="button-container" style="display: flex; gap: 10px;">
-								<form id="deleteForm-<%= documents.id %>" action="/deleteDocuments/<%= documents.id %>" method="POST">
-									<input type="hidden" name="_method" value="DELETE">
-									<button class="btn btn-danger btn-sm" type="submit">Delete</button>
-								</form>
-								<form action="/detailDocuments/<%= documents.filename %>" method="GET">
-									<button class="btn btn-info btn-sm" type="submit">Detail</button>
-								</form>
-								<form id="editResourcesForm" action="/editResources" method="POST">
-									<input type="hidden" name="_method" value="PUT">
-									<input type="hidden" name="documents_id" value="<%= documents.id %>">
-									<button class="btn btn-warning btn-sm" type="submit">Edit</button>
-								</form>
-								
-							</div>
+									<form id="deleteForm-<%= documents.id %>"
+										action="/deleteDocuments/<%= documents.id %>" method="POST">
+										<input type="hidden" name="_method" value="DELETE">
+										<button class="btn btn-danger btn-sm" type="submit">Delete</button>
+									</form>
+									<form action="/detailDocuments/<%= documents.filename %>" method="GET">
+										<button class="btn btn-info btn-sm" type="submit">Detail</button>
+									</form>
+									<form id="editResourcesForm" action="/editResources" method="POST">
+										<input type="hidden" name="_method" value="PUT">
+										<input type="hidden" name="documents_id" value="<%= documents.id %>">
+										<button class="btn btn-warning btn-sm" type="submit">Edit</button>
+									</form>
+
+								</div>
 							</td>
 
 						</tr>
@@ -111,13 +113,13 @@
 
 	<script>
 		const deleteForms = document.querySelectorAll('form[id^="deleteForm-"]');
-		
+
 		deleteForms.forEach((form) => {
 			form.addEventListener('submit', function (event) {
 				event.preventDefault();
-				
+
 				const confirmation = confirm("Are you sure you want to delete this record?");
-				
+
 				if (confirmation) {
 					event.target.submit();
 				}
@@ -125,41 +127,38 @@
 		});
 		const editForm = document.getElementById('editResourcesForm');
 
-editForm.addEventListener('submit', edit);
+		editForm.addEventListener('submit', edit);
 
-async function edit(event) {
-  event.preventDefault();
-  try {
-    const formData = new FormData(editForm);
-    const body = JSON.stringify(Object.fromEntries(formData));
+		async function edit(event) {
+			event.preventDefault();
+			try {
+				const formData = new FormData(editForm);
+				const body = JSON.stringify(Object.fromEntries(formData));
 
-    const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editResources", {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: body,
-    });
+				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editResources", {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: body,
+				});
 
-    const result = await response.json();
+				const result = await response.json();
 
-    if (response.ok) {
-      window.location.href = '/editUpresources'; // Ubah URL yang dituju setelah berhasil mengedit
-    } else {
-      alert(result.message);
-      window.location.href = '/resources'; // Ubah URL yang dituju jika terjadi kesalahan
-    }
-  } catch (error) {
-    console.log(error);
-    alert(error);
-    window.location.href = '/resources'; // Ubah URL yang dituju jika terjadi kesalahan
-  }
-}
+				if (response.ok) {
+					window.location.href = '/editUpresources'; // Ubah URL yang dituju setelah berhasil mengedit
+				} else {
+					alert("Maaf Dokumen tersebut telah Ditolak/Diterima");
+					window.location.href = '/resources'; // Ubah URL yang dituju jika terjadi kesalahan
+				}
+			} catch (error) {
+				console.log(error);
+				alert(error);
+				window.location.href = '/resources'; // Ubah URL yang dituju jika terjadi kesalahan
+			}
+		}
+	</script>
 
-
-
-	  </script>
-	  
 	<footer>
 		<p>&copy; Siletra 2023. All rights reserved.</p>
 	</footer>
