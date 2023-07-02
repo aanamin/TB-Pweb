@@ -200,7 +200,7 @@ controller.tampilEditDokumen = async (req, res) => {
             }
             if (status === 'reject') {
                 return res.status(400).json({
-                    message: 'maaf, dokumen ini sudah ditanda tangani'
+                    message: 'maaf, dokumen ini sudah ditolak'
                 })
             }
 
