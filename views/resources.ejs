@@ -141,7 +141,7 @@
 
 				const result = await response.json();
 
-				if (response.ok) {
+				if (result.ok) {
 					alert(result.message);
 					window.location.href = '/editUpresources'; // Ubah URL yang dituju setelah berhasil mengedit
 				} else {
