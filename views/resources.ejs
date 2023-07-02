@@ -148,7 +148,13 @@
 				if (response.ok) {
 					window.location.href = '/editUpresources'; // Ubah URL yang dituju setelah berhasil mengedit
 				} else {
-					alert("Maaf Dokumen tersebut telah Ditolak/Diterima");
+					if (result.message === 'maaf, dokumen ini sudah ditanda tangani') {
+						alert('Maaf, dokumen ini sudah ditanda tangani');
+					} else if (result.message === 'maaf, dokumen ini sudah ditolak') {
+						alert('Maaf, dokumen ini sudah ditolak');
+					} else {
+						alert(result.message);
+					}
 					window.location.href = '/resources'; // Ubah URL yang dituju jika terjadi kesalahan
 				}
 			} catch (error) {
