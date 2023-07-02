@@ -132,11 +132,14 @@
 			event.preventDefault();
 			try {
 				const response = await fetch("http://siletra.northeurope.cloudapp.azure.com:3000/editResources", {
-					method: 'PUT', // Ubah metode permintaan menjadi PUT
+					method: 'PUT', 
+					headers:{
+						"Content-Type": "application/json",
+					},
 					body: new FormData(editForm) // Menggunakan editForm sebagai argumen FormData
 				});
 
-				const result = await response.text();
+				const result = await response.json();
 
 				if (response.ok) {
 					alert(result.message);

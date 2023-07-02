@@ -207,12 +207,15 @@ controller.tampilEditDokumen = async (req, res) => {
             }
 
         }
-
+       
         res.render('editUpresources', {
             dokumen: dokumen
         })
     } catch (error) {
         console.log(error)
+        res.status(400).json({
+            
+        })
     }
 }
 
@@ -319,7 +322,7 @@ controller.deleteDokumen = async (req, res) => {
                 id
             }
         });
-        // Ganti dengan logika penghapusan dokumen Anda
+        
         res.redirect('/resources');
 
 
